@@ -20,7 +20,7 @@ setup_environ(pingjia.settings)
 BOT_NAME = 'open'
 BOT_VERSION = '1.0'
 
-SPIDER_MODULES = ['dynamic_scraper.spiders', 'open.scraper',]
+SPIDER_MODULES = ['dynamic_scraper.spiders', 'open.scraper','open.spiders']
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
 ITEM_PIPELINES = [

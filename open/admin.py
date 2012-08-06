@@ -2,7 +2,7 @@ from django.contrib import admin
 from open.models import Source, Article,Product,Category,City
 
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'url_', 'scraper')
+    list_display = ('id', 'name', 'url_', 'brand','model','scraper')
     list_display_links = ('name',)
     
     def url_(self, instance):
@@ -19,8 +19,8 @@ class ArticleAdmin(admin.ModelAdmin):
     url_.allow_tags = True
     
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'source', 'url_','meta','time','price','year')
-    list_filter = ('source','time','year')
+    list_display = ('id', 'title', 'source', 'url_','meta','time','price','year','city','region','brand_slug','model_slug')
+    list_filter = ('source','time','year','city','city_slug')
     #list_display = ('id', 'title', 'prod_website','time','price')
     list_display_links = ('title',)
     raw_id_fields = ('checker_runtime',)

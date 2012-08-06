@@ -7,7 +7,10 @@ from dynamic_scraper.models import Scraper, SchedulerRuntime
 
 class Source(models.Model):
     name = models.CharField(max_length=200)
-    url = models.URLField()
+    #url = models.URLField()
+    url = models.CharField(max_length=50)
+    brand = models.CharField(max_length=50,null=True,blank=True)
+    model = models.CharField(max_length=50,null=True,blank=True)
     scraper = models.ForeignKey(Scraper, blank=True, null=True, on_delete=models.SET_NULL)
     scraper_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
@@ -35,6 +38,12 @@ class Product(models.Model):
     url = models.URLField()
     time = models.CharField(max_length=100,blank=True, null=True)
     price = models.CharField(max_length=100,blank=True, null=True)
+    brand_slug = models.CharField(max_length=50,blank=True, null=True)
+    model_slug = models.CharField(max_length=50,blank=True, null=True)
+    city = models.CharField(max_length=50,blank=True, null=True)
+    city_slug = models.CharField(max_length=50,blank=True, null=True)
+    region = models.CharField(max_length=50,blank=True, null=True)
+    region_slug = models.CharField(max_length=50,blank=True, null=True)
     thumbnail = models.CharField(max_length=200,null=True,blank=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
@@ -57,7 +66,7 @@ class Category(models.Model):
     parent = models.CharField(max_length=50,default='N',blank=True,null=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
     def __unicode__(self):
-        return self.name
+        return self.slug
     
 class City(models.Model):
     source = models.ForeignKey(Source)
@@ -67,7 +76,7 @@ class City(models.Model):
     parent = models.CharField(max_length=50,default='N',blank=True,null=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
     def __unicode__(self):
-        return self.name
+        return self.slug
     
 class ArticleItem(DjangoItem):
     django_model = Article
