@@ -25,6 +25,8 @@ urlpatterns = patterns("",
     # one out.
 
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    ("^ajax_match/$","open.views.ajax_match"),
+    ("^search/$","open.views.search"),
 
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------
