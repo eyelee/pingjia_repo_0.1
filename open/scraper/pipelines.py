@@ -2,13 +2,20 @@ from django.db.utils import IntegrityError
 from scrapy import log
 from scrapy.exceptions import DropItem
 from dynamic_scraper.models import SchedulerRuntime
+from open.scraper.spiders import ProductSpider
+from open.base import process_date
 #from open.models import ArticleItem
 
 class DjangoWriterPipeline(object):
     
     def process_item(self, item, spider):
+        
+        if isinstance(spider,ProductSpider):
+            #spider.log("spider: " + spider.name)
+            spider.log("item time is: " + item['time'])
+            item['time']=process_date(item['time'])
+            
         try:
-            #spider.log("item class is: %s" % item)
             #if (item == ArticleItem):
                 #item['news_website'] = spider.ref_object
             #else:

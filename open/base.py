@@ -1,4 +1,5 @@
 from open.models import Category,City
+from datetime import date
 
 cityList= City.objects.filter(parent=None).values()
 brandList=Category.objects.filter(parent=None).values()
@@ -33,6 +34,11 @@ def print_urls(source=None,brand=None):
             self.start_urls.append(scrape_url)
 """
 #def urls_from_city():
+
+def process_date(datestring):
+    if len(datestring.split('-')) == 2:
+        td=date.today()
+    return str(td.year)+'-'+datestring
 
     
     

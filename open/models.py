@@ -1,3 +1,4 @@
+# coding=UTF-8
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -36,8 +37,16 @@ class Product(models.Model):
     meta = models.TextField(blank=True, null=True)
     year = models.IntegerField(blank=True,default=0)
     url = models.URLField()
-    time = models.CharField(max_length=100,blank=True, null=True)
-    price = models.CharField(max_length=100,blank=True, null=True)
+    #time = models.CharField(max_length=100,blank=True, null=True)
+    ### car details
+    time = models.DateTimeField(blank=True, null=True)
+    mile = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True)
+    volume = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True)
+    color = models.CharField(max_length=32,blank=True, null=True)
+    # control = (手动,自动,手自一体)
+    control = models.CharField(max_length=32,blank=True, null=True)
+    ### car details end
+    price = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)
     brand_slug = models.CharField(max_length=50,blank=True, null=True)
     model_slug = models.CharField(max_length=50,blank=True, null=True)
     city = models.CharField(max_length=50,blank=True, null=True)
