@@ -12,6 +12,10 @@
                http://www.vogella.com/articles/EGit/article.html
     git教程：  http://wiki.eclipse.org/EGit/User_Guide#Create_Repository
     github:    https://github.com/eyelee/pingjia_repo
+    
+1.1 参照下面的指南，将ECLIPSE workspace 编码设置成UTF-8
+	http://stackoverflow.com/questions/2707986/eclipse-encoding-macroman-utf8  
+  
               
 2. 安装Pinjia （平价网） 项目的依赖环境和包
     
