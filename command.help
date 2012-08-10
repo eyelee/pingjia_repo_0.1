@@ -1,0 +1,6 @@
+# common command help
+# south:
+	python manage.py schemamigration open --auto
+	python manage.py migrate open
+#scrapy:
+	scrapy crawl product_spider -a id=3 -a do_action=yes
