@@ -10,11 +10,11 @@ DATABASES = {
         # Not used with sqlite3.
         "USER": "root",
         # Not used with sqlite3.
-        "PASSWORD": "password",
+        "PASSWORD": "",
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "",
+        "HOST": "localhost",
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "",
+        "PORT": "3306",
     }
 }
 

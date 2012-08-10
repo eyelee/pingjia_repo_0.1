@@ -53,15 +53,13 @@ def showrect(context):
 
 @register.inclusion_tag("includes/svgcircle.html", takes_context=True)
 def showcircle(context):
-    dateformat='%Y年%m月%d日'
+    dateformat='%Y-%m-%d %H:%M:%S'
     data=context['products']
     product={}
     products=[]
     for item in data:
         product={}
-        if not re.search('^\d+月\d+日$',item['time']):
-            continue
-        product['time']=time.strftime('%Y',time.gmtime())+'年'+item['time']
+        product['time']=str(item['time'])
         if item['price'] is None:
             continue
         if Normalprice(item['price']) is None:
@@ -200,18 +198,12 @@ def price_range(datalist):
         if len(price)<2:
             max_price=price[0]
             min_price=price[0]
-        elif len(price)<5:
+        else:
             price.append(average_price)
             price.sort()
             center=price.index(average_price)
             min_price=price[center-1]
             max_price=price[center+1]
-        elif len(price)>4:
-            price.append(average_price)
-            price.sort()
-            center=price.index(average_price)
-            min_price=price[center-2]
-            max_price=price[center+2]
         return '￥'+str(min_price)+'-￥'+str(max_price)
             
 @register.simple_tag
@@ -221,6 +213,14 @@ def show_normalprice(price):
     if Normalprice(price) is None:
         return
     return Normalprice(price) 
+
+@register.simple_tag
+def show_normaltime(date):
+    from_format='%Y-%m-%d %H:%M:%S'
+    to_format='%Y年%m月%d日'
+    date=str(date)
+    date=time.strftime(to_format,time.strptime(date,from_format))
+    return date
 
 @register.simple_tag
 def average_price(datalist):
