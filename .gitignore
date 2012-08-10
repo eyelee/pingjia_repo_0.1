@@ -3,7 +3,7 @@
 *.db
 .DS_Store
 .coverage
-#*.project
+*.project
 *.pydevproject
 local_settings.py
 #static/
