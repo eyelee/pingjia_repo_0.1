@@ -186,7 +186,7 @@
 <tr>
 <td><a href="{{ item.url }}" target="_blank">{{ item.title }}</a></td>
 <td>￥{% show_normalprice item.price %}</td>
-<td>上海</td>
+<td>{{ item.city }}{% if item.region %}.{{ item.region }}{% endif %}</td>
 <td>{% show_normaltime item.time %}</td>
 </tr>
 {% endfor %} 
