@@ -62,9 +62,15 @@ class Product_info(models.Model):
                              基于现有Product的数据计算 均价，价格范围，交易信息的数量。
     """
     brand=models.ForeignKey(Brand)
+    brand_name=model.CharField()
+    brand_slug=model.CharField()
     modeltype=models.ForeignKey(Modeltype)
+    modeltype_name=model.CharField()
     Productiondate=models.ForeignKey(Productiondate)
+    Productiondate_time=model.CharField()
     category=models.ForeignKey(Category)
+    category_name=model.CharField()
+    category_slug=model.CharField()
     averageprice=models.DecimalField()
     pricerange=model.CharField()
     #价格范围可以改为两个字段存，一个存下限一个存上限
@@ -75,14 +81,23 @@ class Brand_count(models.Model):
               某品牌所有产品的交易信息数量，可基于Productinfo生成，用到其中的count属性
     """  
     brand=models.ForeignKey(Brand)
+    brand_name=model.CharField()
+    brand_slug=model.CharField()
     category=models.ForeignKey(Category)
+    category_name=model.CharField()
+    category_slug=model.CharField()
     count=models.IntegerField()
     
 class Brand_city_count(models.Model):
     """某品牌在某地的交易信息数量，用于展示某品牌最popular的地方，
     """
     brand=models.ForeignKey(Brand)
+    brand_name=model.CharField()
+    brand_slug=model.CharField()
     city=models.ForeignKey(City)
+    city_name=model.CharField()
+    city_slug=model.CharField()
+    #目前这里是只需要具体到市的，如果要具体到县区，或是前面增加省，则增加字段。
     count=count=models.IntegerField()
     
 class Prodcut_time_price(models.Model):
