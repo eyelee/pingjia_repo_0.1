@@ -71,7 +71,7 @@ class Product_info(models.Model):
     category=models.ForeignKey(Category)
     category_name=model.CharField()
     category_slug=model.CharField()
-    averageprice=models.DecimalField()
+    averageprice=model.DecimalField()
     pricerange=model.CharField()
     #价格范围可以改为两个字段存，一个存下限一个存上限
     count=models.IntegerField()
