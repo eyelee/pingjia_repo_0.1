@@ -1,5 +1,4 @@
 DEBUG = True
-USE_TZ = False
 
 DATABASES = {
     "default": {
@@ -10,7 +9,7 @@ DATABASES = {
         # Not used with sqlite3.
         "USER": "root",
         # Not used with sqlite3.
-        "PASSWORD": "password",
+        "PASSWORD": "hY67UJMN",
         # Set to empty string for localhost. Not used with sqlite3.
         "HOST": "",
         # Set to empty string for default. Not used with sqlite3.

@@ -5,13 +5,17 @@ from django.dispatch import receiver
 from scrapy.contrib_exp.djangoitem import DjangoItem
 from dynamic_scraper.models import Scraper, SchedulerRuntime
 
-
+"""
+    Source为搜索爬虫用来抓取数据url来源，一般通过url里含有的品牌 brand，城市city_slug，或者产品类别(cat_slug)等特征信息构建出来
+"""
 class Source(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=32)
     #url = models.URLField()
     url = models.CharField(max_length=50)
-    brand = models.CharField(max_length=50,null=True,blank=True)
-    model = models.CharField(max_length=50,null=True,blank=True)
+    brand = models.CharField(max_length=32,null=True,blank=True)
+    city_slug = models.CharField(max_length=32,null=True,blank=True)
+    cat_slug = models.CharField(max_length=32,null=True,blank=True)
+    #model = models.CharField(max_length=50,null=True,blank=True)
     scraper = models.ForeignKey(Scraper, blank=True, null=True, on_delete=models.SET_NULL)
     scraper_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
@@ -47,32 +51,33 @@ class Product(models.Model):
     control = models.CharField(max_length=32,blank=True, null=True)
     ### car details end
     price = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True)
-    brand_slug = models.CharField(max_length=50,blank=True, null=True)
-    model_slug = models.CharField(max_length=50,blank=True, null=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True)
     city = models.CharField(max_length=50,blank=True, null=True)
-    city_slug = models.CharField(max_length=50,blank=True, null=True)
+    city_slug = models.CharField(max_length=32,blank=True, null=True)
     region = models.CharField(max_length=50,blank=True, null=True)
-    region_slug = models.CharField(max_length=50,blank=True, null=True)
+    region_slug = models.CharField(max_length=32,blank=True, null=True)
     thumbnail = models.CharField(max_length=200,null=True,blank=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
     def __unicode__(self):
         return self.title
-
-class Cat(models.Model):
-    name = models.CharField(max_length=50)
-    slug_cn = models.CharField(max_length=50)
-    slug_en = models.CharField(max_length=50)
     
+class Catype(models.Model):
+    name = models.CharField(max_length=50)
+    slug_cn = models.CharField(max_length=32)
+    slug_en = models.CharField(max_length=32)
     def __unicode__(self):
         return self.name
 
 class Category(models.Model):
     source = models.ForeignKey(Source)
     name = models.CharField(max_length=50,blank=True, null=True)
-    slug = models.CharField(max_length=50, blank=True, null=True)
+    slug = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField()
-    parent = models.CharField(max_length=50,default='N',blank=True,null=True)
+    parent = models.CharField(max_length=32,default='N',blank=True,null=True)
+    #type = models.ForeignKey(Catype)
+    #type_slug = models.CharField(max_length=32,default ='car',blank=True, null=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
     def __unicode__(self):
         return self.slug
@@ -80,7 +85,7 @@ class Category(models.Model):
 class City(models.Model):
     source = models.ForeignKey(Source)
     name = models.CharField(max_length=50,blank=True, null=True)
-    slug = models.CharField(max_length=50, blank=True, null=True)
+    slug = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField()
     parent = models.CharField(max_length=50,default='N',blank=True,null=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  

@@ -2,7 +2,7 @@ from django.contrib import admin
 from open.models import Source, Article,Product,Category,City
 
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'url_', 'brand','model','scraper')
+    list_display = ('id', 'name', 'url_', 'brand','city_slug','cat_slug','scraper')
     list_display_links = ('name',)
     
     def url_(self, instance):
@@ -38,7 +38,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
     def url_(self, instance):
         return '<a href="%s" target="_blank">%s</a>' % (instance.url, instance.url)
-    url_.allow_tags = True
+    url_.allow_tags = True   
     
 class CityAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','prod_website', 'slug', 'url_','parent')
