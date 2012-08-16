@@ -19,10 +19,31 @@ def ajax_match(request):
         post = request.POST.copy()
         if post.has_key('kw'):
             kw = post['kw']
-            categories=Category.objects.filter(name__icontains=kw)[0:10]
             values=[]
-            for item in categories:
-                values.append(item.name)
+            categories=Category.objects.filter(Q(name__icontains=kw)|Q(slug__icontains=kw),parent=None)[0:10]
+            if categories:
+                for item in categories:
+                    values.append(item.name)
+            if len(categories)<10:
+                if len(categories)==0:
+                    deepquery=Category.objects.filter(Q(name__icontains=kw)|Q(slug__icontains=kw))
+                    parent_slug=deepquery[0].parent
+                    parent_item=Category.objects.filter(slug=parent_slug)[0]
+                    if parent_item:
+                        parent_name=parent_item.name+' '
+                    for item in deepquery:
+                        values.append(parent_name+item.name)
+                    if len(deepquery)<10:
+                        categories=Category.objects.filter(parent=parent_slug).exclude(Q(name__icontains=kw)|Q(slug__icontains=kw))[0:10]         
+                else:
+                    deepquery=Category.objects.filter(Q(name__icontains=kw)|Q(slug__icontains=kw)).order_by('parent')[0]
+                    parent_slug=deepquery.slug
+                    parent_name=deepquery.name+' '
+                    categories=Category.objects.filter(parent=parent_slug)[0:10]
+                if categories:
+                    for item in categories:
+                        values.append(parent_name+item.name)
+            values=values[0:10]            
             to_return["values"]=values
             success=True
         else:

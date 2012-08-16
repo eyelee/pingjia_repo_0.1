@@ -92,6 +92,37 @@ class City(models.Model):
     def __unicode__(self):
         return self.slug
     
+class Prod_fact(models.Model):
+    """ 
+              抽象统计的普遍模型,每天统计当天新发布的同一型号产品的均价和数量
+    """  
+    # date: to aggregate the product in the same day. <-- group by open_product.time
+    date = models.DateField(blank=True, null=True) 
+    # 日均价
+    avg_price = models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
+    # 当日发布量
+    units = models.IntegerField(blank=True,default=0)
+    class Meta:
+        abstract = True
+
+class By_model(Prod_fact):
+    """ 
+       group by city，品牌，型号，Year
+    """  
+    year = models.IntegerField(blank=True,default=0)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True)
+    def __unicode__(self):
+        return self.brand_slug+'/'+self.model_slug+'/'+str(self.year)
+    
+class By_city(Prod_fact):
+    # avoid Foreignkey to simplify data loading 
+    city_slug = models.CharField(max_length=32,blank=True, null=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True)
+    def __unicode__(self):
+        return self.brand_slug+'/'+self.model_slug+'/'+self.city_slug
+    
 class ArticleItem(DjangoItem):
     django_model = Article
 
@@ -103,6 +134,7 @@ class CategoryItem(DjangoItem):
      
 class CityItem(DjangoItem):
     django_model = City
+
 
 @receiver(pre_delete)
 def pre_delete_handler(sender, instance, using, **kwargs):
