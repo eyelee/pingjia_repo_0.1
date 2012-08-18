@@ -16,7 +16,7 @@ def Normalprice(price):
     resource_price=re.search('\d+(\.\d+)?',str(price))
     if resource_price is not None:
         friendly_price=float(resource_price.group())
-        normal_price=int(friendly_price*10000)
+        normal_price=int(friendly_price)
         return normal_price
     else:
         return 
