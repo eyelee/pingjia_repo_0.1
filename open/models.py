@@ -125,6 +125,9 @@ class By_city(Prod_fact):
         return self.brand_slug+'/'+self.model_slug+'/'+self.city_slug
 
 class procedure_mark(models.Model):
+    """标记上一次存储过程执行到的ID，通过比较时间的方式不可靠，因为现在就有了如2012-12-31的time，
+                       而且新抓取的信息发布时间也可能 会早于当前时间
+    """
     name=models.CharField(max_length=32,blank=True, null=True)
     mark_id=models.IntegerField(blank=True,default=0)
     
