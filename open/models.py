@@ -51,12 +51,12 @@ class Product(models.Model):
     control = models.CharField(max_length=32,blank=True, null=True)
     ### car details end
     price = models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
-    brand_slug = models.CharField(max_length=32,blank=True, null=True)
-    model_slug = models.CharField(max_length=32,blank=True, null=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     city = models.CharField(max_length=50,blank=True, null=True)
-    city_slug = models.CharField(max_length=32,blank=True, null=True)
+    city_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     region = models.CharField(max_length=50,blank=True, null=True)
-    region_slug = models.CharField(max_length=32,blank=True, null=True)
+    region_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     thumbnail = models.CharField(max_length=200,null=True,blank=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
@@ -76,6 +76,7 @@ class Category(models.Model):
     slug = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField()
     parent = models.CharField(max_length=32,default='N',blank=True,null=True)
+    keywords= models.TextField(blank=True,null=True)
     #type = models.ForeignKey(Catype)
     #type_slug = models.CharField(max_length=32,default ='car',blank=True, null=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
@@ -109,19 +110,23 @@ class By_model(Prod_fact):
     """ 
        group by city，品牌，型号，Year
     """  
-    year = models.IntegerField(blank=True,default=0)
-    brand_slug = models.CharField(max_length=32,blank=True, null=True)
-    model_slug = models.CharField(max_length=32,blank=True, null=True)
+    year = models.IntegerField(blank=True,default=0,db_index=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     def __unicode__(self):
         return self.brand_slug+'/'+self.model_slug+'/'+str(self.year)
     
 class By_city(Prod_fact):
     # avoid Foreignkey to simplify data loading 
-    city_slug = models.CharField(max_length=32,blank=True, null=True)
-    brand_slug = models.CharField(max_length=32,blank=True, null=True)
-    model_slug = models.CharField(max_length=32,blank=True, null=True)
+    city_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     def __unicode__(self):
         return self.brand_slug+'/'+self.model_slug+'/'+self.city_slug
+
+class procedure_mark(models.Model):
+    name=models.CharField(max_length=32,blank=True, null=True)
+    mark_id=models.IntegerField(blank=True,default=0)
     
 class ArticleItem(DjangoItem):
     django_model = Article
