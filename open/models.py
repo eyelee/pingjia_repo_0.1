@@ -124,9 +124,19 @@ class By_city(Prod_fact):
     def __unicode__(self):
         return self.brand_slug+'/'+self.model_slug+'/'+self.city_slug
 
+class By_year(models.Model):
+    avg_price = models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
+    price_range=models.CharField(max_length=32,blank=True, null=True)
+    units = models.IntegerField(blank=True,default=0)
+    year = models.IntegerField(blank=True,default=0,db_index=True)
+    brand_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    model_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
+    def __unicode__(self):
+        return self.brand_slug+'/'+self.model_slug+'/'+self.city_slug
+    
 class procedure_mark(models.Model):
-    """标记上一次存储过程执行到的ID，通过比较时间的方式不可靠，因为现在就有了如2012-12-31的time，
-                        而且新抓取的信息发布时间也可能 会早于当前时间
+    """标记上一次存储过程执行到的被同步的表的ID，通过比较时间的方式不可靠，
+                        新抓取的信息发布时间也可能 会早于当前时间很多天甚至是几个月，具体以哪个时间刻度为标准无法判断。
     """
     name=models.CharField(max_length=32,blank=True, null=True)
     mark_id=models.IntegerField(blank=True,default=0)
