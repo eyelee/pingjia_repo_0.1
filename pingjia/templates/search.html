@@ -43,11 +43,11 @@
     <div class="span6">
 <h3>平价网参考价</h3>
      <div class="big_price">
-     ￥{% average_price products %}
+     ￥{{ products_data.avg_price }}
      </div>
  <h3>可以接受的价格区间</h3>
      <div class="price_range">
-	 {% price_range products %}
+	 ￥{{ products_data.price_range_min }}-￥{{ products_data.price_range_max }}
 	 </div>
 
 <form class="form-horizontal inline well" id="review-mini" style="padding-bottom:5px;">
