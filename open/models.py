@@ -126,7 +126,8 @@ class By_city(Prod_fact):
 
 class By_year(models.Model):
     avg_price = models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
-    price_range=models.CharField(max_length=32,blank=True, null=True)
+    price_range_min=models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
+    price_range_max=models.DecimalField(max_digits=10, decimal_places=1,blank=True, null=True)
     units = models.IntegerField(blank=True,default=0)
     year = models.IntegerField(blank=True,default=0,db_index=True)
     brand_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
