@@ -1,7 +1,7 @@
-/*¸ü¸Äopen_product price×Ö¶ÎÒÔ£¨Ôª£©Îªµ¥Î»£º*/
+ï»¿/*æ›´æ”¹open_product priceå­—æ®µä»¥ï¼ˆå…ƒï¼‰ä¸ºå•ä½ï¼š*/ 
 update open_product set price=replace(price,price,price*10000)
 
-/*Îªopen_category´´½¨¹Ø¼ü×Ö£¬ËÑË÷ÔÚopen_categoryÖĞ½øĞĞ*/
+/*ä¸ºopen_categoryåˆ›å»ºå…³é”®å­—ï¼Œæœç´¢åœ¨open_categoryä¸­è¿›è¡Œ*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS create_keywords_for_category//
 CREATE PROCEDURE create_keywords_for_category()
@@ -35,8 +35,8 @@ END
 // 
 DELIMITER ;
 
-/*´æ´¢¹ı³Ì£¬³õÊ¼»¯open_by_model²¢³õÊ¼»¯open_procedure_markÖĞÏà¹Ø±ê¼Ç£¬
-Ã¿´ÎÖ´ĞĞµÈÍ¬ÓÚ´¦ÀíÖ´ĞĞÊ±open_productÖĞµÄËùÓĞÊı¾İ£º*/
+/*å­˜å‚¨è¿‡ç¨‹ï¼Œåˆå§‹åŒ–open_by_modelå¹¶åˆå§‹åŒ–open_procedure_markä¸­ç›¸å…³æ ‡è®°ï¼Œ
+æ¯æ¬¡æ‰§è¡Œç­‰åŒäºå¤„ç†æ‰§è¡Œæ—¶open_productä¸­çš„æ‰€æœ‰æ•°æ®ï¼š*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS init_by_model//
 CREATE PROCEDURE init_by_model()
@@ -49,8 +49,8 @@ END
 // 
 DELIMITER ;
 
-/*´æ´¢¹ı³Ì£¬³õÊ¼»¯open_by_year²¢³õÊ¼»¯open_procedure_markÖĞÏà¹Ø±ê¼Ç£¬
-Ã¿´ÎÖ´ĞĞµÈÍ¬ÓÚ´¦ÀíÖ´ĞĞÊ±open_productÖĞµÄËùÓĞÊı¾İ£º*/
+/*å­˜å‚¨è¿‡ç¨‹ï¼Œåˆå§‹åŒ–open_by_yearå¹¶åˆå§‹åŒ–open_procedure_markä¸­ç›¸å…³æ ‡è®°ï¼Œ
+æ¯æ¬¡æ‰§è¡Œç­‰åŒäºå¤„ç†æ‰§è¡Œæ—¶open_productä¸­çš„æ‰€æœ‰æ•°æ®ï¼š*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS init_by_year//
 CREATE PROCEDURE init_by_year()
@@ -63,8 +63,8 @@ END
 // 
 DELIMITER ;
 
-/*´æ´¢¹ı³Ì£¬³õÊ¼»¯open_by_city²¢³õÊ¼»¯open_procedure_markÖĞÏà¹Ø±ê¼Ç£¬
-Ã¿´ÎÖ´ĞĞµÈÍ¬ÓÚ´¦ÀíÖ´ĞĞÊ±open_productÖĞµÄËùÓĞÊı¾İ£º*/
+/*å­˜å‚¨è¿‡ç¨‹ï¼Œåˆå§‹åŒ–open_by_cityå¹¶åˆå§‹åŒ–open_procedure_markä¸­ç›¸å…³æ ‡è®°ï¼Œ
+æ¯æ¬¡æ‰§è¡Œç­‰åŒäºå¤„ç†æ‰§è¡Œæ—¶open_productä¸­çš„æ‰€æœ‰æ•°æ®ï¼š*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS init_by_city//
 CREATE PROCEDURE init_by_city()
@@ -79,7 +79,7 @@ END
 DELIMITER ;
 
 
-/*´æ´¢¹ı³ÌÍ¬²½open_productÖĞĞÂµÄÊı¾İµ½open_by_model£º*/
+/*å­˜å‚¨è¿‡ç¨‹åŒæ­¥open_productä¸­æ–°çš„æ•°æ®åˆ°open_by_modelï¼š*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS sync_by_model//
 CREATE PROCEDURE sync_by_model()
@@ -122,12 +122,12 @@ end if;
 END LOOP;
 CLOSE rs; 
 update open_procedure_mark set mark_id=new_mark_id where name='sync_by_model';
-select insert_count as ²åÈë ,update_count as ¸üĞÂ;
+select insert_count as æ’å…¥ ,update_count as æ›´æ–°;
 END
 // 
 DELIMITER ;
 
-/*´æ´¢¹ı³ÌÍ¬²½open_productÖĞĞÂµÄÊı¾İµ½open_by_year£º*/
+/*å­˜å‚¨è¿‡ç¨‹åŒæ­¥open_productä¸­æ–°çš„æ•°æ®åˆ°open_by_yearï¼š*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS sync_by_year//
 CREATE PROCEDURE sync_by_year()
@@ -173,12 +173,12 @@ end if;
 END LOOP;
 CLOSE rs; 
 update open_procedure_mark set mark_id=new_mark_id where name='sync_by_year';
-select insert_count as ²åÈë ,update_count as ¸üĞÂ;
+select insert_count as æ’å…¥ ,update_count as æ›´æ–°;
 END
 // 
 DELIMITER ;
 
-/*´æ´¢¹ı³ÌÍ¬²½open_productÖĞĞÂµÄÊı¾İµ½open_by_city£º(´ı¶¨£¬Ä£ĞÍ¿ÉÄÜÔÙ±ä£¬ÏÖÓĞby_cityÄ£ĞÍÎŞÊµ¼ÊÒâÒå)
+/*å­˜å‚¨è¿‡ç¨‹åŒæ­¥open_productä¸­æ–°çš„æ•°æ®åˆ°open_by_cityï¼š(å¾…å®šï¼Œæ¨¡å‹å¯èƒ½å†å˜ï¼Œç°æœ‰by_cityæ¨¡å‹æ— å®é™…æ„ä¹‰)
 DELIMITER //
 DROP PROCEDURE IF EXISTS sync_by_city//
 CREATE PROCEDURE sync_by_city()
