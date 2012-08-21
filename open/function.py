@@ -21,9 +21,9 @@ def Normalprice(price):
         #return normal_price
     #else:
         #return
-    if price>10000:
+    if price>=10000:
         return str(round(price/10000,2))+'万'
-    elif price>100:
+    elif price>=100:
         return str(int(price))
     else:
         return str(price)

@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>No Results!</h1>
+<h1>抱歉，没有找到相关结果，可能是网站暂时没有相关的数据</h1>
 <br>
-<p>Your search 
+{% if kw %}
+<p>您搜索的
 <b>{{ kw }}</b> 
-did not match any products!
+没有匹配到相关结果!
 </p>
-<p>Suggestions:</p>
+{% else %}
+<p>请尝试搜索您想要找的商品
+</p>
+{% endif %}
+<p>建议:</p>
 <ul>
-<li>Make sure all words are spelled correctly.</li>
-<li>Try different keywords.</li>
-<li>Think positive thoughts.</li>
+<li>请确定关键词输入拼写正确.</li>
+<li>请尝试用空格隔开多个关键词.</li>
+<li>请尝试更加简洁、准确的关键词.</li>
 </ul>
 {% endblock %}
