@@ -27,9 +27,10 @@ urlpatterns = patterns("",
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
     ("^ajax_match/$","open.views.ajax_match"),
     ("^search/$","open.views.search"),
-    ("^(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/(?P<year>\d+)/$","open.views.accurate_products"),
-    ("^(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/$","open.views.accurate_products"),
-    ("^(?P<brand_slug>[-\w]+)/$","open.views.brand"),
+    ("^guids/$","open.views.guids"),
+    ("^cars/(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/(?P<year>\d+)/$","open.views.accurate_products"),
+    ("^cars/(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/$","open.views.accurate_products"),
+    ("^cars/(?P<brand_slug>[-\w]+)/$","open.views.brand"),
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------
     # This pattern gives us a normal ``Page`` object, so that your

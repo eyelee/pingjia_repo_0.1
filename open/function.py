@@ -1,3 +1,4 @@
+# coding=UTF-8
 import re
 import math
 
@@ -13,13 +14,19 @@ def Average(datalist):
     return result
 
 def Normalprice(price):
-    resource_price=re.search('\d+(\.\d+)?',str(price))
-    if resource_price is not None:
-        friendly_price=float(resource_price.group())
-        normal_price=int(friendly_price)
-        return normal_price
+    #resource_price=re.search('\d+(\.\d+)?',str(price))
+    #if resource_price is not None:
+        #friendly_price=float(resource_price.group())
+        #normal_price=int(friendly_price)
+        #return normal_price
+    #else:
+        #return
+    if price>10000:
+        return str(round(price/10000,2))+'万'
+    elif price>100:
+        return str(int(price))
     else:
-        return 
+        return str(price)
     
 def Normdistribution(x,u=0,sigma=0.4):
     x=float(x)/200

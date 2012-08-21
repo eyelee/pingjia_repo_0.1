@@ -11,14 +11,24 @@ def showrect(context):
     """
     show svg rect diagram.
     """
-    #context["products"] = BlogPostForm()
-    data=[{'time':'2003','price':'6800'},
-          {'time':'2004','price':'7800'},
-          {'time':'2005','price':'8800'},
-          {'time':'2006','price':'9800'},
-          {'time':'2007','price':'10800'},
-          {'time':'2008','price':'12600'}
-         ]
+    data_default=context['products_data_default']
+    data_default={'time':data_default.year,'price':data_default.avg_price}
+    data=context['products_data']
+    temps=[]
+    for item in data:
+        temp={}
+        temp['time']=item.year
+        temp['price']=item.avg_price
+        temps.append(temp)
+    data=temps    
+    if len(data)>6:
+        key=data.index(data_default)
+        if key<3:
+           data=data[0:6]
+        elif key>len(data)-4:
+           data=data[-6:]
+        else:
+           data=data[key-2:key+4] 
     price=[]
     for item in data: 
         price.append(int(item['price']))
@@ -53,18 +63,16 @@ def showrect(context):
 
 @register.inclusion_tag("includes/svgcircle.html", takes_context=True)
 def showcircle(context):
-    dateformat='%Y-%m-%d %H:%M:%S'
-    data=context['products']
+    dateformat='%Y-%m-%d'
+    data=context['products_daily']
     product={}
     products=[]
     for item in data:
         product={}
-        product['time']=str(item['time'])
-        if item['price'] is None:
+        product['time']=str(item.date)
+        if item.avg_price is None:
             continue
-        if Normalprice(item['price']) is None:
-            continue
-        product['price']=Normalprice(item['price'])
+        product['price']=item.avg_price
         products.append(product)
     data=products
     svgheight=280
@@ -182,6 +190,29 @@ def showpath(context):
     result['points']=points
     return result
 
+@register.inclusion_tag("includes/availableyear.html", takes_context=True)
+def show_availableyear(context):
+    data=context['products_data']
+    availables=[]
+    for item in data:
+        available={}
+        available['year']=item.year
+        available['url']='/cars/'+item.brand_slug+'/'+item.model_slug+'/'+str(item.year)+'/'
+        availables.append(available)
+    if len(availables)%3==0:
+        num=len(availables)/3
+    else:
+        num=int(len(availables)/3)+1    
+    j=0
+    k=3
+    temps=[]
+    for i in range(num):
+        temp=availables[j:k]
+        temps.append(temp)
+        j=j+3
+        k=k+3  
+    return {'availables':temps}
+        
 @register.simple_tag
 def price_range(datalist):
     if not datalist:
@@ -190,9 +221,7 @@ def price_range(datalist):
     for item in datalist:
         if item['price'] is None:
             continue
-        if Normalprice(item['price']) is None:
-            continue
-        price.append(Normalprice(item['price']))
+        price.append(item['price'])
     if price:
         average_price=Average(price)
         if len(price)<2:
@@ -209,8 +238,6 @@ def price_range(datalist):
 @register.simple_tag
 def show_normalprice(price):
     if price is None:
-        return
-    if Normalprice(price) is None:
         return
     return Normalprice(price) 
 
@@ -230,9 +257,7 @@ def average_price(datalist):
     for item in datalist:
         if item['price'] is None:
             continue
-        if Normalprice(item['price']) is None:
-            continue
-        price.append(Normalprice(item['price']))
+        price.append(item['price'])
     if price:
         average_price=Average(price)
         return average_price

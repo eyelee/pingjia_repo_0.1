@@ -6,22 +6,33 @@
 <div class="tabbable">
 <ul class="breadcrumb breadsearch">
   <li>
-    <a href="/">主页</a> <span class="divider">/</span>
+    <a href="/">主页</a> <span class="divider">&raquo;</span>
   </li>
-  <!--<li>
-    <a href="#">汽车</a> <span class="divider">/</span>
+{% if brandcate and modeltype %}
+  <li>
+    <a href="{{brandcate.url}}">{{brandcate.brand_name}}</a> <span class="divider">&raquo;</span>
   </li>
   <li>
-    <a href="#">BMW</a> <span class="divider">/</span>
+    <a href="{{modeltype.url}}">{{modeltype.model_name}}</a> <span class="divider">&raquo;</span>
   </li>
+{% if yeartime %}
   <li>
-    <a href="#">5系列</a> <span class="divider">/</span>
-  </li>-->
+    <a href="{{yeartime.url}}">{{yeartime.year}}</a>
+  </li>
+{% endif %}
+{% else %}
   <li class="active">{{ kw }}</li>
+{% endif %}
+  
+
 </ul>
 <div class="row">
   <div class="span9">
+   {% if brandcate and modeltype %}
+   <h1>{% if yeartime %}{{yeartime.year}}&nbsp;{% endif %}{{brandcate.brand_name}}&nbsp;{{modeltype.model_name}}</h1>
+   {% else %}
    <h1>{{ kw }}</h1>
+   {% endif %}
   </div>
   <div class="span3">
   <button type="submit" class="btn btn-primary" href="#">
@@ -43,11 +54,11 @@
     <div class="span6">
 <h3>平价网参考价</h3>
      <div class="big_price">
-     ￥{{ products_data.avg_price }}
+     ￥{% show_normalprice products_data_default.avg_price %}
      </div>
  <h3>可以接受的价格区间</h3>
      <div class="price_range">
-	 ￥{{ products_data.price_range_min }}-￥{{ products_data.price_range_max }}
+	 ￥{% show_normalprice products_data_default.price_range_min %}-￥{% show_normalprice products_data_default.price_range_max %}
 	 </div>
 
 <form class="form-horizontal inline well" id="review-mini" style="padding-bottom:5px;">
@@ -65,44 +76,7 @@
 </form>
 
 <h3>产品年代</h3>
-
-<table width="100%" class="table condensed">
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/1991/">1991</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/1992/">1992</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/1993/">1993</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/1994/">1994</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/1995/">1995</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/1997/">1997</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/1998/">1998</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/1999/">1999</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2000/">2000</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/2001/">2001</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2002/">2002</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2003/">2003</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/2004/">2004</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2005/">2005</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2006/">2006</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/2007/">2007</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2008/">2008</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2009/">2009</a></td>
-</tr>
-<tr>
-<td width="33%"><a href="/cars/bmw/5-series/2010/">2010</a></td>
-<td width="33%"><a href="/cars/bmw/5-series/2011/">2011</a></td>
-</tr>
-</table>
-
+{% show_availableyear %}
 <hr />
 <h3>
 评估报告所用数据
@@ -161,12 +135,12 @@
 </div>
 <hr>
  <div id="charts"><h3>年度比较</h3>
- <div id="chart2" class="chart placeholder" style="height: 200px;">
+ <div id="chart2" class="chart placeholder" style="height: 200px;border:1px solid rgb(238,238,238);">
  {% showrect %}
  </div>
  <hr>
  <h3>价格趋势</h3>
- <div id="price_time" class="chart placeholder" style="height: 280px;">
+ <div id="price_time" class="chart placeholder" style="height: 280px;border:1px solid rgb(238,238,238);">
  {% showcircle %}
  </div>
 </div>

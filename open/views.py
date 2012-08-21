@@ -85,16 +85,13 @@ def search(request):
                         pass
                     elif len(categories)==1:
                         if categories[0].parent:
-                           products_data=By_year.objects.filter(brand_slug=categories[0].parent,model_slug=categories[0].slug)[0]
+                           products_data=By_year.objects.filter(brand_slug=categories[0].parent,model_slug=categories[0].slug).order_by('year')
                            if products_data:
-                              products=Product.objects.filter(brand_slug=products_data.brand_slug,model_slug=products_data.model_slug,year=products_data.year).order_by('-time')[0:50]
-                              products_dict=[]
-                              for item in products: 
-                                  product=model_to_dict(item)
-                                  products_dict.append(product)
-                              products=products_dict
+                              products_data_default=products_data[len(products_data)-1]                       
+                              products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
+                              products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
                               excerpt_products= products[0:5]
-                              if products:
+                              if products and products_daily:
                                   return render_to_response("search.html",locals())
                               else:
                                   return render_to_response("nothingfound.html",locals())
@@ -108,5 +105,39 @@ def search(request):
                     return render_to_response("nothingfound.html",locals())
             else:
                 return HttpResponseRedirect('/')
+    else:
+        return HttpResponseRedirect('/')
             
-        
+def accurate_products(request,brand_slug=None,model_slug=None,year=None): 
+       if brand_slug and model_slug:
+           products_data=By_year.objects.filter(brand_slug=brand_slug,model_slug=model_slug).order_by('year')
+           if products_data:
+              brandcate=Category.objects.filter(slug=brand_slug,parent=None)[0]
+              brandcate={'brand_name':brandcate.name,'url':'/cars/'+brand_slug+'/'}
+              modeltype=Category.objects.filter(slug=model_slug,parent=brand_slug)[0] 
+              modeltype={'model_name':modeltype.name,'url':'/cars/'+brand_slug+'/'+model_slug+'/'}
+              if year:
+                 products_data_default=products_data.filter(year=year)[0]
+                 yeartime={'year':year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+year+'/'}
+              else:
+                 products_data_default=products_data[len(products_data)-1]
+                 yeartime={'year':products_data_default.year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+str(products_data_default.year)+'/'}
+              if not products_data_default:
+                 return HttpResponseRedirect('/')                       
+              products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
+              products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
+              excerpt_products= products[0:5]
+              if products and products_daily:
+                 return render_to_response("search.html",locals())
+              else:
+                 return HttpResponseRedirect('/')
+           else:
+              return HttpResponseRedirect('/') 
+       else:
+           return HttpResponseRedirect('/')
+
+def guids(request):
+    pass
+
+def brand(request):
+    pass

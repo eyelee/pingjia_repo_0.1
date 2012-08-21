@@ -1,0 +1,9 @@
+<table width="100%" class="table condensed">
+{% for items in availables %}
+<tr>
+{% for item in items %}
+<td width="33%"><a href="{{item.url}}">{{item.year}}</a></td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
