@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load open_tags %}
+{% block content %}
+<h1>浏览品牌</h1>
+<br>
+<p> 我们还有会更多的产品。如果有你想添加的产品<a href="#">请联系我们</a>.</p>
+<br>
+{% for item in brands_infos %}
+<h3>{{item.letter}}</h3>
+<table class="table" width="640" style="table-layout:fixed">
+     <colgroup>
+          <col width="160">
+          <col width="160">
+          <col width="160">
+          <col width="160">
+     </colgroup>
+     <tbody>
+     {% for brands_row in item.brands%}
+            <tr>
+            {% for brand in brands_row %}
+                <td>
+                    <a href="/cars/{{ brand.slug}}/">
+                        {{brand.name}}
+                    </a>
+                </td>
+            {% endfor %}
+            </tr>
+     {% endfor %}
+     </tbody>
+</table>
+<br>
+{% endfor %}
+{% endblock %}

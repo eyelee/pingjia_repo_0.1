@@ -137,7 +137,27 @@ def accurate_products(request,brand_slug=None,model_slug=None,year=None):
            return HttpResponseRedirect('/')
 
 def guids(request):
-    pass
+    letters=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+    brands_infos=[]
+    for item in letters:
+        brands_info={}
+        brands=Category.objects.filter(slug__istartswith=item,parent=None)
+        if len(brands)%4==0:
+           num=len(brands)/4
+        else:
+           num=int(len(brands)/4)+1    
+        j=0
+        k=4
+        temps=[]
+        for i in range(num):
+           temp=brands[j:k]
+           temps.append(temp)
+           j=j+4
+           k=k+4 
+        brands_info['letter']=item
+        brands_info['brands']=temps
+        brands_infos.append(brands_info)
+    return render_to_response("guids.html",locals())   
 
-def brand(request):
+def brand(request,brand_slug):
     pass
