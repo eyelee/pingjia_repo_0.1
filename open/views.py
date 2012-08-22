@@ -117,24 +117,24 @@ def accurate_products(request,brand_slug=None,model_slug=None,year=None):
               modeltype=Category.objects.filter(slug=model_slug,parent=brand_slug)[0] 
               modeltype={'model_name':modeltype.name,'url':'/cars/'+brand_slug+'/'+model_slug+'/'}
               if year:
-                 products_data_default=products_data.filter(year=year)[0]
+                 products_data_default=products_data.filter(year=year)[0:1]
                  yeartime={'year':year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+year+'/'}
               else:
                  products_data_default=products_data[len(products_data)-1]
                  yeartime={'year':products_data_default.year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+str(products_data_default.year)+'/'}
               if not products_data_default:
-                 return HttpResponseRedirect('/')                       
+                 return render_to_response("nothingfound.html",locals())                       
               products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
               products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
               excerpt_products= products[0:5]
               if products and products_daily:
                  return render_to_response("search.html",locals())
               else:
-                 return HttpResponseRedirect('/')
+                 return render_to_response("nothingfound.html",locals())
            else:
-              return HttpResponseRedirect('/') 
+              return render_to_response("nothingfound.html",locals()) 
        else:
-           return HttpResponseRedirect('/')
+           return render_to_response("nothingfound.html",locals())
 
 def guids(request):
     letters=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -160,4 +160,4 @@ def guids(request):
     return render_to_response("guids.html",locals())   
 
 def brand(request,brand_slug):
-    pass
+    return render_to_response("brand_models.html",locals())

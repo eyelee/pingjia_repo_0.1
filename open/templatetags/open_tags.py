@@ -65,6 +65,10 @@ def showrect(context):
 def showcircle(context):
     dateformat='%Y-%m-%d'
     data=context['products_daily']
+    result={}
+    if len(data)<2:
+        result['onlyone']=True
+        return result
     product={}
     products=[]
     for item in data:
@@ -118,7 +122,18 @@ def showcircle(context):
         datepoint_str=time.strftime('%m/%d/%y',time.gmtime(i*(maxdate-mindate)/11+mindate))
         datepoint=dict(datepoint_x=datepoint_x,datepoint_str=datepoint_str)
         datepoints.append(datepoint)
-    result={}
+    price_unit=maxprice/7
+    price_unit_str=str(price_unit)
+    degree=price_unit_str.index('.')
+    price_unit=round(price_unit/pow(10,(degree-1)),1)*pow(10,(degree-1))
+    price_marks=[]
+    i=1
+    for item in range(7):
+        price_mark={}
+        price_mark['mark_price']=i*price_unit
+        price_mark['mark_price_y']=first_y_position+ky*i*price_unit
+        price_marks.append(price_mark)
+        i=i+1
     result['svgwidth']=svgwidth
     result['svgheight']=svgheight
     result['datepoints']=datepoints
@@ -127,6 +142,7 @@ def showcircle(context):
     result['average_line_x2']=average_line_x2
     result['average_line_y1']=average_line_y1
     result['average_line_y2']=average_line_y2
+    result['price_marks']=price_marks
     return result
 
 @register.inclusion_tag("includes/svgpath.html", takes_context=True)
