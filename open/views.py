@@ -33,17 +33,18 @@ def ajax_match(request):
                     deepquery=Category.objects
                     for item in kws:
                         deepquery=deepquery.filter(keywords__icontains=item)
-                    parent_slug=deepquery[0].parent
-                    parent_item=Category.objects.filter(slug=parent_slug)[0]
-                    if parent_item:
-                        parent_name=parent_item.name+' '
-                    for item in deepquery:
-                        values.append(parent_name+item.name)
-                    if len(deepquery)<10:
-                        categories=Category.objects.filter(parent=parent_slug)
+                    if deepquery:
+                        parent_slug=deepquery[0].parent
+                        parent_item=Category.objects.filter(slug=parent_slug)[0]
+                        if parent_item:
+                            parent_name=parent_item.name+' '
                         for item in deepquery:
-                            categories=categories.exclude(id=item.id)
-                        categories=categories[0:10]         
+                            values.append(parent_name+item.name)
+                        if len(deepquery)<10:
+                            categories=Category.objects.filter(parent=parent_slug)
+                            for item in deepquery:
+                                categories=categories.exclude(id=item.id)
+                            categories=categories[0:10]         
                 else:
                     deepquery=Category.objects
                     for item in kws:
