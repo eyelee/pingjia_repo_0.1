@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>平价向导</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Example of Fixed Layout with Twitter Bootstrap version 2.0 from w3resource.com">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="docs/assets/css/bootstrap.css" rel="stylesheet">
+<link href="docs/assets/css/example-fixed-layout.css" rel="stylesheet">
+<link href="docs/assets/css/example-fluid-layout.css" rel="stylesheet">
+<link href="docs/assets/css/pingjia-search.css" rel="stylesheet">
+<link href="docs/assets/css/base.css" rel="stylesheet">
+<link href="docs/assets/css/all-city.css" rel="stylesheet">
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<!-- Le fav and touch icons -->
+<link rel="shortcut icon" href="twitter-bootstrap-v2/docs/examples/images/favicon.ico">
+<link rel="apple-touch-icon" href="twitter-bootstrap-v2/docs/examples/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="twitter-bootstrap-v2/docs/examples/images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="twitter-bootstrap-v2/docs/examples/images/apple-touch-icon-114x114.png">
+<script type="text/javascript">
+provinceArray = new Array("北京市","上海市","天津市","重庆市","河北省","山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","广西壮族自治区","海南省","四川省","贵州省","云南省","西藏自治区","陕西省","甘肃省","宁夏回族自治区","青海省","新疆维吾尔族自治区","香港特别行政区","澳门特别行政区","台湾省","其它");
+
+//定义 城市 数据数组
+cityArray = new Array(); 
+cityArray[0] = new Array("北京市","东城|西城|崇文|宣武|朝阳|丰台|石景山|海淀|门头沟|房山|通州|顺义|昌平|大兴|平谷|怀柔|密云|延庆"); 
+cityArray[1] = new Array("上海市","黄浦|卢湾|徐汇|长宁|静安|普陀|闸北|虹口|杨浦|闵行|宝山|嘉定|浦东|金山|松江|青浦|南汇|奉贤|崇明"); 
+cityArray[2] = new Array("天津市","和平|东丽|河东|西青|河西|津南|南开|北辰|河北|武清|红挢|塘沽|汉沽|大港|宁河|静海|宝坻|蓟县"); 
+cityArray[3] = new Array("重庆市","万州|涪陵|渝中|大渡口|江北|沙坪坝|九龙坡|南岸|北碚|万盛|双挢|渝北|巴南|黔江|长寿|綦江|潼南|铜梁 |大足|荣昌|壁山|梁平|城口|丰都|垫江|武隆|忠县|开县|云阳|奉节|巫山|巫溪|石柱|秀山|酉阳|彭水|江津|合川|永川|南川"); 
+cityArray[4] = new Array("河北省","石家庄|邯郸|邢台|保定|张家口|承德|廊坊|唐山|秦皇岛|沧州|衡水"); 
+cityArray[5] = new Array("山西省","太原|大同|阳泉|长治|晋城|朔州|吕梁|忻州|晋中|临汾|运城"); 
+cityArray[6] = new Array("内蒙古自治区","呼和浩特|包头|乌海|赤峰|呼伦贝尔盟|阿拉善盟|哲里木盟|兴安盟|乌兰察布盟|锡林郭勒盟|巴彦淖尔盟|伊克昭盟"); 
+cityArray[7] = new Array("辽宁省","沈阳|大连|鞍山|抚顺|本溪|丹东|锦州|营口|阜新|辽阳|盘锦|铁岭|朝阳|葫芦岛"); 
+cityArray[8] = new Array("吉林省","长春|吉林|四平|辽源|通化|白山|松原|白城|延边"); 
+cityArray[9] = new Array("黑龙江省","哈尔滨|齐齐哈尔|牡丹江|佳木斯|大庆|绥化|鹤岗|鸡西|黑河|双鸭山|伊春|七台河|大兴安岭"); 
+cityArray[10] = new Array("江苏省","南京|镇江|苏州|南通|扬州|盐城|徐州|连云港|常州|无锡|宿迁|泰州|淮安"); 
+cityArray[11] = new Array("浙江省","杭州|宁波|温州|嘉兴|湖州|绍兴|金华|衢州|舟山|台州|丽水"); 
+cityArray[12] = new Array("安徽省","合肥|芜湖|蚌埠|马鞍山|淮北|铜陵|安庆|黄山|滁州|宿州|池州|淮南|巢湖|阜阳|六安|宣城|亳州"); 
+cityArray[13] = new Array("福建省","福州|厦门|莆田|三明|泉州|漳州|南平|龙岩|宁德"); 
+cityArray[14] = new Array("江西省","南昌市|景德镇|九江|鹰潭|萍乡|新馀|赣州|吉安|宜春|抚州|上饶"); 
+cityArray[15] = new Array("山东省","济南|青岛|淄博|枣庄|东营|烟台|潍坊|济宁|泰安|威海|日照|莱芜|临沂|德州|聊城|滨州|菏泽"); 
+cityArray[16] = new Array("河南省","郑州|开封|洛阳|平顶山|安阳|鹤壁|新乡|焦作|濮阳|许昌|漯河|三门峡|南阳|商丘|信阳|周口|驻马店|济源"); 
+cityArray[17] = new Array("湖北省","武汉|宜昌|荆州|襄樊|黄石|荆门|黄冈|十堰|恩施|潜江|天门|仙桃|随州|咸宁|孝感|鄂州");
+cityArray[18] = new Array("湖南省","长沙|常德|株洲|湘潭|衡阳|岳阳|邵阳|益阳|娄底|怀化|郴州|永州|湘西|张家界"); 
+cityArray[19] = new Array("广东省","广州|深圳|珠海|汕头|东莞|中山|佛山|韶关|江门|湛江|茂名|肇庆|惠州|梅州|汕尾|河源|阳江|清远|潮州|揭阳|云浮"); 
+cityArray[20] = new Array("广西壮族自治区","南宁|柳州|桂林|梧州|北海|防城港|钦州|贵港|玉林|南宁地区|柳州地区|贺州|百色|河池"); 
+cityArray[21] = new Array("海南省","海口|三亚"); 
+cityArray[22] = new Array("四川省","成都|绵阳|德阳|自贡|攀枝花|广元|内江|乐山|南充|宜宾|广安|达川|雅安|眉山|甘孜|凉山|泸州"); 
+cityArray[23] = new Array("贵州省","贵阳|六盘水|遵义|安顺|铜仁|黔西南|毕节|黔东南|黔南"); 
+cityArray[24] = new Array("云南省","昆明|大理|曲靖|玉溪|昭通|楚雄|红河|文山|思茅|西双版纳|保山|德宏|丽江|怒江|迪庆|临沧");
+cityArray[25] = new Array("西藏自治区","拉萨|日喀则|山南|林芝|昌都|阿里|那曲"); 
+cityArray[26] = new Array("陕西省","西安|宝鸡|咸阳|铜川|渭南|延安|榆林|汉中|安康|商洛"); 
+cityArray[27] = new Array("甘肃省","兰州|嘉峪关|金昌|白银|天水|酒泉|张掖|武威|定西|陇南|平凉|庆阳|临夏|甘南"); 
+cityArray[28] = new Array("宁夏回族自治区","银川|石嘴山|吴忠|固原"); 
+cityArray[29] = new Array("青海省","西宁|海东|海南|海北|黄南|玉树|果洛|海西"); 
+cityArray[30] = new Array("新疆维吾尔族自治区","乌鲁木齐|石河子|克拉玛依|伊犁|巴音郭勒|昌吉|克孜勒苏柯尔克孜|博尔塔拉|吐鲁番|哈密|喀什|和田|阿克苏"); 
+cityArray[31] = new Array("香港特别行政区","香港特别行政区"); 
+cityArray[32] = new Array("澳门特别行政区","澳门特别行政区"); 
+cityArray[33] = new Array("台湾省","台北|高雄|台中|台南|屏东|南投|云林|新竹|彰化|苗栗|嘉义|花莲|桃园|宜兰|基隆|台东|金门|马祖|澎湖"); 
+cityArray[34] = new Array("其它","北美洲|南美洲|亚洲|非洲|欧洲|大洋洲");
+
+function initProvince(){
+document.all.selProvince.length = 0 ; 
+for(i=0; i<provinceArray.length; i++){
+   document.all.selProvince.options[i] = new Option(provinceArray[i],provinceArray[i]);
+}
+getCity(document.all.selProvince.options[0].value)
+}
+
+function getCity(currProvince)
+{
+    //当前 所选择 的 省
+    var currProvince = currProvince;
+    var i,j,k;
+    //清空 城市 下拉选单
+    document.all.selCity.length = 0 ; 
+    for (i = 0 ;i <cityArray.length;i++)
+      {   
+          //得到 当前省 在 城市数组中的位置
+          if(cityArray[i][0]==currProvince)
+            {   
+                //得到 当前省 所辖制的 地市
+                tmpcityArray = cityArray[i][1].split("|")
+                  for(j=0;j<tmpcityArray.length;j++)
+                  {
+                    //填充 城市 下拉选单
+                    document.all.selCity.options[document.all.selCity.length] = new Option(tmpcityArray[j],tmpcityArray[j]); 
+                  }
+            } 
+      } 
+}
+</script>
+</head>
+<body>
+<div class="navbar navbar-fixed-top" >
+<div class="navbar-inner">
+<div class="container">
+<div class="row-fluid">
+<div class="span5">
+<div style="padding-top: 11px;">  
+<form class="form-search">
+<input type="text" class="span9 input-medium search-query" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="["Ahmedabad","Akola","Asansol","Aurangabad","Bangaluru","Baroda","Belgaon","Berhumpur","Calicut","Chennai","Chapra","Cherapunji"]"> 
+</form> 
+</div>
+</div>
+
+<div class="span3">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" >
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</a>
+<a class="brand" href="#"><img src="img/logo_220x33_stroke.png" width="220" height="33" alt="w3resource logo" /></a>
+  
+
+</div>
+<div class="span4"
+
+<div class="nav-collapse span4">
+<ul class="nav row-fluid">  
+<li class="span8"></li>
+<li class="span4"><a href="#me">注册</a></li>    
+</ul>  
+</div><!--/.nav-collapse -->
+</div>
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+  <div id="content" class="container">
+  <hr>
+  <div class="row-fluid">
+  
+  <div class="span7" >
+ <BODY onload="initProvince()">
+  <strong>省市:</strong> 
+		<select name="province" id="selProvince" onChange = "getCity(this.options[this.selectedIndex].value)">
+    	</select>
+    	<select name="city" id="selCity">
+        	<option>北京</option>
+    	</select>
+</BODY> 
+<input class="btn btn-confirm" type="submit" value="确定">
+  </div>
+  <div class="span5" style="margin-left:-5px;">
+ <strong class="span2 ac-strong">或者</strong>
+ <input type="text" class="span6 ac-input" placeholder="城市名、拼音、电话区号…">
+ <button style="margin-left:230px;margin-top:-37px;" type="submit" class="btn btn-primary span2">进入</button>
+  </div>
+  
+  </div>
+  <hr>
+  
+  <div class="all-city">  
+<dl>
+  <dt>
+    A
+  </dt>
+  <dd>
+    <a href="http://anshan.ganji.com/">
+      鞍山
+    </a>
+    <a href="http://anyang.ganji.com/">
+      安阳
+    </a>
+    <a href="http://anqing.ganji.com/">
+      安庆
+    </a>
+    <a href="http://ankang.ganji.com/">
+      安康
+    </a>
+    <a href="http://akesu.ganji.com/">
+      阿克苏
+    </a>
+    <a href="http://anshun.ganji.com/">
+      安顺
+    </a>
+    <a href="http://aletai.ganji.com/">
+      阿勒泰
+    </a>
+    <a href="http://alashan.ganji.com/">
+      阿拉善
+    </a>
+    <a href="http://aba.ganji.com/">
+      阿坝
+    </a>
+    <a href="http://ali.ganji.com/">
+      阿里
+    </a>
+    <a href="http://alaer.ganji.com/">
+      阿拉尔
+    </a>
+  </dd>
+  <dt>
+    B
+  </dt>
+  <dd>
+    <a href="http://bj.ganji.com/" class="redLink">
+      北京
+    </a>
+    <a href="http://baoding.ganji.com/">
+      保定
+    </a>
+    <a href="http://binzhou.ganji.com/">
+      滨州
+    </a>
+    <a href="http://baotou.ganji.com/">
+      包头
+    </a>
+    <a href="http://baoji.ganji.com/">
+      宝鸡
+    </a>
+    <a href="http://benxi.ganji.com/">
+      本溪
+    </a>
+    <a href="http://bengbu.ganji.com/">
+      蚌埠
+    </a>
+    <a href="http://beihai.ganji.com/">
+      北海
+    </a>
+    <a href="http://bayannaoer.ganji.com/">
+      巴彦淖尔
+    </a>
+    <a href="http://baicheng.ganji.com/">
+      白城
+    </a>
+    <a href="http://baishan.ganji.com/">
+      白山
+    </a>
+    <a href="http://bozhou.ganji.com/">
+      亳州
+    </a>
+    <a href="http://bazhong.ganji.com/">
+      巴中
+    </a>
+    <a href="http://baiyin.ganji.com/">
+      白银
+    </a>
+    <a href="http://baise.ganji.com/">
+      百色
+    </a>
+    <a href="http://bijie.ganji.com/">
+      毕节
+    </a>
+    <a href="http://bayinguoleng.ganji.com/">
+      巴音郭楞
+    </a>
+    <a href="http://baoshan.ganji.com/">
+      保山
+    </a>
+    <a href="http://boertala.ganji.com/">
+      博尔塔拉
+    </a>
+  </dd>
+  <dt>
+    C
+  </dt>
+  <dd>
+    <a href="http://cd.ganji.com/" class="redLink">
+      成都
+    </a>
+    <a href="http://cq.ganji.com/" class="redLink">
+      重庆
+    </a>
+    <a href="http://cs.ganji.com/" class="redLink">
+      长沙
+    </a>
+    <a href="http://cc.ganji.com/" class="redLink">
+      长春
+    </a>
+    <a href="http://changzhou.ganji.com/">
+      常州
+    </a>
+    <a href="http://cangzhou.ganji.com/">
+      沧州
+    </a>
+    <a href="http://chifeng.ganji.com/">
+      赤峰
+    </a>
+    <a href="http://chengde.ganji.com/">
+      承德
+    </a>
+    <a href="http://changde.ganji.com/">
+      常德
+    </a>
+    <a href="http://changzhi.ganji.com/">
+      长治
+    </a>
+    <a href="http://chenzhou.ganji.com/">
+      郴州
+    </a>
+    <a href="http://chuzhou.ganji.com/">
+      滁州
+    </a>
+    <a href="http://chaohu.ganji.com/">
+      巢湖
+    </a>
+    <a href="http://chaozhou.ganji.com/">
+      潮州
+    </a>
+    <a href="http://changji.ganji.com/">
+      昌吉
+    </a>
+    <a href="http://chizhou.ganji.com/">
+      池州
+    </a>
+    <a href="http://chuxiong.ganji.com/">
+      楚雄
+    </a>
+    <a href="http://chongzuo.ganji.com/">
+      崇左
+    </a>
+    <a href="http://changdu.ganji.com/">
+      昌都
+    </a>
+  </dd>
+  <dt>
+    D
+  </dt>
+  <dd>
+    <a href="http://dl.ganji.com/" class="redLink">
+      大连
+    </a>
+    <a href="http://dg.ganji.com/" class="redLink">
+      东莞
+    </a>
+    <a href="http://dezhou.ganji.com/">
+      德州
+    </a>
+    <a href="http://dongying.ganji.com/">
+      东营
+    </a>
+    <a href="http://daqing.ganji.com/">
+      大庆
+    </a>
+    <a href="http://datong.ganji.com/">
+      大同
+    </a>
+    <a href="http://dandong.ganji.com/">
+      丹东
+    </a>
+    <a href="http://deyang.ganji.com/">
+      德阳
+    </a>
+    <a href="http://dazhou.ganji.com/">
+      达州
+    </a>
+    <a href="http://dali.ganji.com/">
+      大理
+    </a>
+    <a href="http://daxinganling.ganji.com/">
+      大兴安岭
+    </a>
+    <a href="http://dingxi.ganji.com/">
+      定西
+    </a>
+    <a href="http://dehong.ganji.com/">
+      德宏
+    </a>
+    <a href="http://diqing.ganji.com/">
+      迪庆
+    </a>
+  </dd>
+  <dt>
+    E
+  </dt>
+  <dd>
+    <a href="http://eerduosi.ganji.com/">
+      鄂尔多斯
+    </a>
+    <a href="http://enshi.ganji.com/">
+      恩施
+    </a>
+    <a href="http://ezhou.ganji.com/">
+      鄂州
+    </a>
+  </dd>
+  <dt>
+    F
+  </dt>
+  <dd>
+    <a href="http://fz.ganji.com/" class="redLink">
+      福州
+    </a>
+    <a href="http://foshan.ganji.com/" class="redLink">
+      佛山
+    </a>
+    <a href="http://fushun.ganji.com/">
+      抚顺
+    </a>
+    <a href="http://fuyang.ganji.com/">
+      阜阳
+    </a>
+    <a href="http://fuxin.ganji.com/">
+      阜新
+    </a>
+    <a href="http://jxfuzhou.ganji.com/">
+      抚州
+    </a>
+    <a href="http://fangchenggang.ganji.com/">
+      防城港
+    </a>
+  </dd>
+  <dt>
+    G
+  </dt>
+  <dd>
+    <a href="http://gz.ganji.com/" class="redLink">
+      广州
+    </a>
+    <a href="http://gy.ganji.com/" class="redLink">
+      贵阳
+    </a>
+    <a href="http://gl.ganji.com/" class="redLink">
+      桂林
+    </a>
+    <a href="http://ganzhou.ganji.com/">
+      赣州
+    </a>
+    <a href="http://guangyuan.ganji.com/">
+      广元
+    </a>
+    <a href="http://guangan.ganji.com/">
+      广安
+    </a>
+    <a href="http://guigang.ganji.com/">
+      贵港
+    </a>
+    <a href="http://guyuan.ganji.com/">
+      固原
+    </a>
+    <a href="http://gannan.ganji.com/">
+      甘南
+    </a>
+    <a href="http://ganzi.ganji.com/">
+      甘孜
+    </a>
+    <a href="http://guoluo.ganji.com/">
+      果洛
+    </a>
+  </dd>
+  <dt>
+    H
+  </dt>
+  <dd>
+    <a href="http://hz.ganji.com/" class="redLink">
+      杭州
+    </a>
+    <a href="http://hrb.ganji.com/" class="redLink">
+      哈尔滨
+    </a>
+    <a href="http://hf.ganji.com/" class="redLink">
+      合肥
+    </a>
+    <a href="http://nmg.ganji.com/" class="redLink">
+      呼和浩特
+    </a>
+    <a href="http://hn.ganji.com/" class="redLink">
+      海口
+    </a>
+    <a href="http://handan.ganji.com/">
+      邯郸
+    </a>
+    <a href="http://huizhou.ganji.com/">
+      惠州
+    </a>
+    <a href="http://heze.ganji.com/">
+      菏泽
+    </a>
+    <a href="http://hengshui.ganji.com/">
+      衡水
+    </a>
+    <a href="http://huaian.ganji.com/">
+      淮安
+    </a>
+    <a href="http://hengyang.ganji.com/">
+      衡阳
+    </a>
+    <a href="http://huludao.ganji.com/">
+      葫芦岛
+    </a>
+    <a href="http://huainan.ganji.com/">
+      淮南
+    </a>
+    <a href="http://hanzhong.ganji.com/">
+      汉中
+    </a>
+    <a href="http://huaihua.ganji.com/">
+      怀化
+    </a>
+    <a href="http://huaibei.ganji.com/">
+      淮北
+    </a>
+    <a href="http://huanggang.ganji.com/">
+      黄冈
+    </a>
+    <a href="http://huzhou.ganji.com/">
+      湖州
+    </a>
+    <a href="http://huangshi.ganji.com/">
+      黄石
+    </a>
+    <a href="http://hulunbeier.ganji.com/">
+      呼伦贝尔
+    </a>
+    <a href="http://heyuan.ganji.com/">
+      河源
+    </a>
+    <a href="http://hebi.ganji.com/">
+      鹤壁
+    </a>
+    <a href="http://hegang.ganji.com/">
+      鹤岗
+    </a>
+    <a href="http://huangshan.ganji.com/">
+      黄山
+    </a>
+    <a href="http://honghe.ganji.com/">
+      红河
+    </a>
+    <a href="http://hechi.ganji.com/">
+      河池
+    </a>
+    <a href="http://hami.ganji.com/">
+      哈密
+    </a>
+    <a href="http://heihe.ganji.com/">
+      黑河
+    </a>
+    <a href="http://hezhou.ganji.com/">
+      贺州
+    </a>
+    <a href="http://haixi.ganji.com/">
+      海西
+    </a>
+    <a href="http://hetian.ganji.com/">
+      和田
+    </a>
+    <a href="http://haibei.ganji.com/">
+      海北
+    </a>
+    <a href="http://haidong.ganji.com/">
+      海东
+    </a>
+    <a href="http://huangnan.ganji.com/">
+      黄南
+    </a>
+  </dd>
+  <dt>
+    J
+  </dt>
+  <dd>
+    <a href="http://jn.ganji.com/" class="redLink">
+      济南
+    </a>
+    <a href="http://jining.ganji.com/">
+      济宁
+    </a>
+    <a href="http://jilin.ganji.com/">
+      吉林
+    </a>
+    <a href="http://jinzhou.ganji.com/">
+      锦州
+    </a>
+    <a href="http://jinhua.ganji.com/">
+      金华
+    </a>
+    <a href="http://jiaxing.ganji.com/">
+      嘉兴
+    </a>
+    <a href="http://jiangmen.ganji.com/">
+      江门
+    </a>
+    <a href="http://jingzhou.ganji.com/">
+      荆州
+    </a>
+    <a href="http://jiaozuo.ganji.com/">
+      焦作
+    </a>
+    <a href="http://jinzhong.ganji.com/">
+      晋中
+    </a>
+    <a href="http://jiamusi.ganji.com/">
+      佳木斯
+    </a>
+    <a href="http://jiujiang.ganji.com/">
+      九江
+    </a>
+    <a href="http://jincheng.ganji.com/">
+      晋城
+    </a>
+    <a href="http://jingmen.ganji.com/">
+      荆门
+    </a>
+    <a href="http://jixi.ganji.com/">
+      鸡西
+    </a>
+    <a href="http://jian.ganji.com/">
+      吉安
+    </a>
+    <a href="http://jieyang.ganji.com/">
+      揭阳
+    </a>
+    <a href="http://jingdezhen.ganji.com/">
+      景德镇
+    </a>
+    <a href="http://jiyuan.ganji.com/">
+      济源
+    </a>
+    <a href="http://jiuquan.ganji.com/">
+      酒泉
+    </a>
+    <a href="http://jinchang.ganji.com/">
+      金昌
+    </a>
+    <a href="http://jiayuguan.ganji.com/">
+      嘉峪关
+    </a>
+  </dd>
+  <dt>
+    K
+  </dt>
+  <dd>
+    <a href="http://km.ganji.com/" class="redLink">
+      昆明
+    </a>
+    <a href="http://kaifeng.ganji.com/">
+      开封
+    </a>
+    <a href="http://kashi.ganji.com/">
+      喀什
+    </a>
+    <a href="http://kelamayi.ganji.com/">
+      克拉玛依
+    </a>
+    <a href="http://kuerle.ganji.com/">
+      库尔勒
+    </a>
+    <a href="http://kezilesu.ganji.com/">
+      克孜勒苏
+    </a>
+  </dd>
+  <dt>
+    L
+  </dt>
+  <dd>
+    <a href="http://lz.ganji.com/" class="redLink">
+      兰州
+    </a>
+    <a href="http://xz.ganji.com/" class="redLink">
+      拉萨
+    </a>
+    <a href="http://langfang.ganji.com/">
+      廊坊
+    </a>
+    <a href="http://linyi.ganji.com/">
+      临沂
+    </a>
+    <a href="http://luoyang.ganji.com/">
+      洛阳
+    </a>
+    <a href="http://liaocheng.ganji.com/">
+      聊城
+    </a>
+    <a href="http://liuzhou.ganji.com/">
+      柳州
+    </a>
+    <a href="http://lianyungang.ganji.com/">
+      连云港
+    </a>
+    <a href="http://linfen.ganji.com/">
+      临汾
+    </a>
+    <a href="http://luohe.ganji.com/">
+      漯河
+    </a>
+    <a href="http://liaoyang.ganji.com/">
+      辽阳
+    </a>
+    <a href="http://leshan.ganji.com/">
+      乐山
+    </a>
+    <a href="http://luzhou.ganji.com/">
+      泸州
+    </a>
+    <a href="http://luan.ganji.com/">
+      六安
+    </a>
+    <a href="http://loudi.ganji.com/">
+      娄底
+    </a>
+    <a href="http://laiwu.ganji.com/">
+      莱芜
+    </a>
+    <a href="http://longyan.ganji.com/">
+      龙岩
+    </a>
+    <a href="http://lvliang.ganji.com/">
+      吕梁
+    </a>
+    <a href="http://lishui.ganji.com/">
+      丽水
+    </a>
+    <a href="http://liangshan.ganji.com/">
+      凉山
+    </a>
+    <a href="http://lijiang.ganji.com/">
+      丽江
+    </a>
+    <a href="http://liupanshui.ganji.com/">
+      六盘水
+    </a>
+    <a href="http://liaoyuan.ganji.com/">
+      辽源
+    </a>
+    <a href="http://laibin.ganji.com/">
+      来宾
+    </a>
+    <a href="http://lincang.ganji.com/">
+      临沧
+    </a>
+    <a href="http://longnan.ganji.com/">
+      陇南
+    </a>
+    <a href="http://linxia.ganji.com/">
+      临夏
+    </a>
+    <a href="http://linzhi.ganji.com/">
+      林芝
+    </a>
+  </dd>
+  <dt>
+    M
+  </dt>
+  <dd>
+    <a href="http://mianyang.ganji.com/">
+      绵阳
+    </a>
+    <a href="http://mudanjiang.ganji.com/">
+      牡丹江
+    </a>
+    <a href="http://maoming.ganji.com/">
+      茂名
+    </a>
+    <a href="http://meizhou.ganji.com/">
+      梅州
+    </a>
+    <a href="http://maanshan.ganji.com/">
+      马鞍山
+    </a>
+    <a href="http://meishan.ganji.com/">
+      眉山
+    </a>
+  </dd>
+  <dt>
+    N
+  </dt>
+  <dd>
+    <a href="http://nj.ganji.com/" class="redLink">
+      南京
+    </a>
+    <a href="http://nb.ganji.com/" class="redLink">
+      宁波
+    </a>
+    <a href="http://nn.ganji.com/" class="redLink">
+      南宁
+    </a>
+    <a href="http://nc.ganji.com/" class="redLink">
+      南昌
+    </a>
+    <a href="http://nantong.ganji.com/">
+      南通
+    </a>
+    <a href="http://nanyang.ganji.com/">
+      南阳
+    </a>
+    <a href="http://nanchong.ganji.com/">
+      南充
+    </a>
+    <a href="http://neijiang.ganji.com/">
+      内江
+    </a>
+    <a href="http://nanping.ganji.com/">
+      南平
+    </a>
+    <a href="http://ningde.ganji.com/">
+      宁德
+    </a>
+    <a href="http://nujiang.ganji.com/">
+      怒江
+    </a>
+    <a href="http://naqu.ganji.com/">
+      那曲
+    </a>
+  </dd>
+  <dt>
+    P
+  </dt>
+  <dd>
+    <a href="http://pingdingshan.ganji.com/">
+      平顶山
+    </a>
+    <a href="http://puyang.ganji.com/">
+      濮阳
+    </a>
+    <a href="http://panjin.ganji.com/">
+      盘锦
+    </a>
+    <a href="http://putian.ganji.com/">
+      莆田
+    </a>
+    <a href="http://panzhihua.ganji.com/">
+      攀枝花
+    </a>
+    <a href="http://pingxiang.ganji.com/">
+      萍乡
+    </a>
+    <a href="http://pingliang.ganji.com/">
+      平凉
+    </a>
+    <a href="http://puer.ganji.com/">
+      普洱
+    </a>
+  </dd>
+  <dt>
+    Q
+  </dt>
+  <dd>
+    <a href="http://qd.ganji.com/" class="redLink">
+      青岛
+    </a>
+    <a href="http://qinhuangdao.ganji.com/">
+      秦皇岛
+    </a>
+    <a href="http://quanzhou.ganji.com/">
+      泉州
+    </a>
+    <a href="http://qiqihaer.ganji.com/">
+      齐齐哈尔
+    </a>
+    <a href="http://qingyuan.ganji.com/">
+      清远
+    </a>
+    <a href="http://qujing.ganji.com/">
+      曲靖
+    </a>
+    <a href="http://quzhou.ganji.com/">
+      衢州
+    </a>
+    <a href="http://qingyang.ganji.com/">
+      庆阳
+    </a>
+    <a href="http://qitaihe.ganji.com/">
+      七台河
+    </a>
+    <a href="http://qinzhou.ganji.com/">
+      钦州
+    </a>
+    <a href="http://qianjiang.ganji.com/">
+      潜江
+    </a>
+    <a href="http://qiandongnan.ganji.com/">
+      黔东南
+    </a>
+    <a href="http://qiannan.ganji.com/">
+      黔南
+    </a>
+    <a href="http://qianxinan.ganji.com/">
+      黔西南
+    </a>
+  </dd>
+  <dt>
+    R
+  </dt>
+  <dd>
+    <a href="http://rizhao.ganji.com/">
+      日照
+    </a>
+    <a href="http://rikaze.ganji.com/">
+      日喀则
+    </a>
+  </dd>
+  <dt>
+    S
+  </dt>
+  <dd>
+    <a href="http://sh.ganji.com/" class="redLink">
+      上海
+    </a>
+    <a href="http://sz.ganji.com/" class="redLink">
+      深圳
+    </a>
+    <a href="http://sy.ganji.com/" class="redLink">
+      沈阳
+    </a>
+    <a href="http://sjz.ganji.com/" class="redLink">
+      石家庄
+    </a>
+    <a href="http://su.ganji.com/" class="redLink">
+      苏州
+    </a>
+    <a href="http://shantou.ganji.com/">
+      汕头
+    </a>
+    <a href="http://shangqiu.ganji.com/">
+      商丘
+    </a>
+    <a href="http://sanya.ganji.com/">
+      三亚
+    </a>
+    <a href="http://suqian.ganji.com/">
+      宿迁
+    </a>
+    <a href="http://shaoxing.ganji.com/">
+      绍兴
+    </a>
+    <a href="http://shiyan.ganji.com/">
+      十堰
+    </a>
+    <a href="http://siping.ganji.com/">
+      四平
+    </a>
+    <a href="http://sanmenxia.ganji.com/">
+      三门峡
+    </a>
+    <a href="http://shaoyang.ganji.com/">
+      邵阳
+    </a>
+    <a href="http://shangrao.ganji.com/">
+      上饶
+    </a>
+    <a href="http://suining.ganji.com/">
+      遂宁
+    </a>
+    <a href="http://sanming.ganji.com/">
+      三明
+    </a>
+    <a href="http://suihua.ganji.com/">
+      绥化
+    </a>
+    <a href="http://shihezi.ganji.com/">
+      石河子
+    </a>
+    <a href="http://ahsuzhou.ganji.com/">
+      宿州
+    </a>
+    <a href="http://shaoguan.ganji.com/">
+      韶关
+    </a>
+    <a href="http://songyuan.ganji.com/">
+      松原
+    </a>
+    <a href="http://suizhou.ganji.com/">
+      随州
+    </a>
+    <a href="http://shanwei.ganji.com/">
+      汕尾
+    </a>
+    <a href="http://shuangyashan.ganji.com/">
+      双鸭山
+    </a>
+    <a href="http://shuozhou.ganji.com/">
+      朔州
+    </a>
+    <a href="http://shizuishan.ganji.com/">
+      石嘴山
+    </a>
+    <a href="http://shangluo.ganji.com/">
+      商洛
+    </a>
+    <a href="http://shennongjia.ganji.com/">
+      神农架
+    </a>
+    <a href="http://shannan.ganji.com/">
+      山南
+    </a>
+  </dd>
+  <dt>
+    T
+  </dt>
+  <dd>
+    <a href="http://tj.ganji.com/" class="redLink">
+      天津
+    </a>
+    <a href="http://ty.ganji.com/" class="redLink">
+      太原
+    </a>
+    <a href="http://tangshan.ganji.com/">
+      唐山
+    </a>
+    <a href="http://taian.ganji.com/">
+      泰安
+    </a>
+    <a href="http://zjtaizhou.ganji.com/">
+      台州
+    </a>
+    <a href="http://jstaizhou.ganji.com/">
+      泰州
+    </a>
+    <a href="http://tieling.ganji.com/">
+      铁岭
+    </a>
+    <a href="http://tongliao.ganji.com/">
+      通辽
+    </a>
+    <a href="http://tonghua.ganji.com/">
+      通化
+    </a>
+    <a href="http://tianshui.ganji.com/">
+      天水
+    </a>
+    <a href="http://tongling.ganji.com/">
+      铜陵
+    </a>
+    <a href="http://tongchuan.ganji.com/">
+      铜川
+    </a>
+    <a href="http://tongren.ganji.com/">
+      铜仁
+    </a>
+    <a href="http://tianmen.ganji.com/">
+      天门
+    </a>
+    <a href="http://tacheng.ganji.com/">
+      塔城
+    </a>
+    <a href="http://tulufan.ganji.com/">
+      吐鲁番
+    </a>
+    <a href="http://tumushuke.ganji.com/">
+      图木舒克
+    </a>
+  </dd>
+  <dt>
+    W
+  </dt>
+  <dd>
+    <a href="http://wh.ganji.com/" class="redLink">
+      武汉
+    </a>
+    <a href="http://wx.ganji.com/" class="redLink">
+      无锡
+    </a>
+    <a href="http://xj.ganji.com/" class="redLink">
+      乌鲁木齐
+    </a>
+    <a href="http://wei.ganji.com/" class="redLink">
+      威海
+    </a>
+    <a href="http://weifang.ganji.com/">
+      潍坊
+    </a>
+    <a href="http://wenzhou.ganji.com/">
+      温州
+    </a>
+    <a href="http://wuhu.ganji.com/">
+      芜湖
+    </a>
+    <a href="http://weinan.ganji.com/">
+      渭南
+    </a>
+    <a href="http://wuhai.ganji.com/">
+      乌海
+    </a>
+    <a href="http://wuzhou.ganji.com/">
+      梧州
+    </a>
+    <a href="http://wulanchabu.ganji.com/">
+      乌兰察布
+    </a>
+    <a href="http://wuwei.ganji.com/">
+      武威
+    </a>
+    <a href="http://wenshan.ganji.com/">
+      文山
+    </a>
+    <a href="http://wuzhong.ganji.com/">
+      吴忠
+    </a>
+    <a href="http://wujiaqu.ganji.com/">
+      五家渠
+    </a>
+    <a href="http://wuzhishan.ganji.com/">
+      五指山
+    </a>
+  </dd>
+  <dt>
+    X
+  </dt>
+  <dd>
+    <a href="http://xa.ganji.com/" class="redLink">
+      西安
+    </a>
+    <a href="http://xm.ganji.com/" class="redLink">
+      厦门
+    </a>
+    <a href="http://xn.ganji.com/" class="redLink">
+      西宁
+    </a>
+    <a href="http://xuzhou.ganji.com/">
+      徐州
+    </a>
+    <a href="http://xianyang.ganji.com/">
+      咸阳
+    </a>
+    <a href="http://xingtai.ganji.com/">
+      邢台
+    </a>
+    <a href="http://xiangyang.ganji.com/">
+      襄阳
+    </a>
+    <a href="http://xinxiang.ganji.com/">
+      新乡
+    </a>
+    <a href="http://xiangtan.ganji.com/">
+      湘潭
+    </a>
+    <a href="http://xuchang.ganji.com/">
+      许昌
+    </a>
+    <a href="http://xinyang.ganji.com/">
+      信阳
+    </a>
+    <a href="http://xiaogan.ganji.com/">
+      孝感
+    </a>
+    <a href="http://xinzhou.ganji.com/">
+      忻州
+    </a>
+    <a href="http://xianning.ganji.com/">
+      咸宁
+    </a>
+    <a href="http://xinyu.ganji.com/">
+      新余
+    </a>
+    <a href="http://xuancheng.ganji.com/">
+      宣城
+    </a>
+    <a href="http://xiantao.ganji.com/">
+      仙桃
+    </a>
+    <a href="http://xilinguole.ganji.com/">
+      锡林郭勒
+    </a>
+    <a href="http://xiangxi.ganji.com/">
+      湘西
+    </a>
+    <a href="http://xingan.ganji.com/">
+      兴安
+    </a>
+    <a href="http://xishuangbanna.ganji.com/">
+      西双版纳
+    </a>
+  </dd>
+  <dt>
+    Y
+  </dt>
+  <dd>
+    <a href="http://yc.ganji.com/" class="redLink">
+      银川
+    </a>
+    <a href="http://yichang.ganji.com/" class="redLink">
+      宜昌
+    </a>
+    <a href="http://yantai.ganji.com/" class="redLink">
+      烟台
+    </a>
+    <a href="http://yangzhou.ganji.com/">
+      扬州
+    </a>
+    <a href="http://yancheng.ganji.com/">
+      盐城
+    </a>
+    <a href="http://yingkou.ganji.com/">
+      营口
+    </a>
+    <a href="http://yueyang.ganji.com/">
+      岳阳
+    </a>
+    <a href="http://yuncheng.ganji.com/">
+      运城
+    </a>
+    <a href="http://sxyulin.ganji.com/">
+      榆林
+    </a>
+    <a href="http://yibin.ganji.com/">
+      宜宾
+    </a>
+    <a href="http://yangquan.ganji.com/">
+      阳泉
+    </a>
+    <a href="http://yanan.ganji.com/">
+      延安
+    </a>
+    <a href="http://yiyang.ganji.com/">
+      益阳
+    </a>
+    <a href="http://yongzhou.ganji.com/">
+      永州
+    </a>
+    <a href="http://gxyulin.ganji.com/">
+      玉林
+    </a>
+    <a href="http://jxyichun.ganji.com/">
+      宜春
+    </a>
+    <a href="http://yangjiang.ganji.com/">
+      阳江
+    </a>
+    <a href="http://yanbian.ganji.com/">
+      延边
+    </a>
+    <a href="http://yuxi.ganji.com/">
+      玉溪
+    </a>
+    <a href="http://yili.ganji.com/">
+      伊犁
+    </a>
+    <a href="http://yunfu.ganji.com/">
+      云浮
+    </a>
+    <a href="http://hljyichun.ganji.com/">
+      伊春
+    </a>
+    <a href="http://yaan.ganji.com/">
+      雅安
+    </a>
+    <a href="http://yingtan.ganji.com/">
+      鹰潭
+    </a>
+    <a href="http://yushu.ganji.com/">
+      玉树
+    </a>
+  </dd>
+  <dt>
+    Z
+  </dt>
+  <dd>
+    <a href="http://zz.ganji.com/" class="redLink">
+      郑州
+    </a>
+    <a href="http://zhuhai.ganji.com/" class="redLink">
+      珠海
+    </a>
+    <a href="http://zibo.ganji.com/">
+      淄博
+    </a>
+    <a href="http://zhongshan.ganji.com/">
+      中山
+    </a>
+    <a href="http://zaozhuang.ganji.com/">
+      枣庄
+    </a>
+    <a href="http://zhangjiakou.ganji.com/">
+      张家口
+    </a>
+    <a href="http://zhuzhou.ganji.com/">
+      株洲
+    </a>
+    <a href="http://zhenjiang.ganji.com/">
+      镇江
+    </a>
+    <a href="http://zhoukou.ganji.com/">
+      周口
+    </a>
+    <a href="http://zhanjiang.ganji.com/">
+      湛江
+    </a>
+    <a href="http://zhumadian.ganji.com/">
+      驻马店
+    </a>
+    <a href="http://zhaoqing.ganji.com/">
+      肇庆
+    </a>
+    <a href="http://zigong.ganji.com/">
+      自贡
+    </a>
+    <a href="http://zunyi.ganji.com/">
+      遵义
+    </a>
+    <a href="http://zhangzhou.ganji.com/">
+      漳州
+    </a>
+    <a href="http://zhoushan.ganji.com/">
+      舟山
+    </a>
+    <a href="http://zhangye.ganji.com/">
+      张掖
+    </a>
+    <a href="http://ziyang.ganji.com/">
+      资阳
+    </a>
+    <a href="http://zhangjiajie.ganji.com/">
+      张家界
+    </a>
+    <a href="http://zhaotong.ganji.com/">
+      昭通
+    </a>
+    <a href="http://zhongwei.ganji.com/">
+      中卫
+    </a>
+  </dd>
+</dl>
+</div>
+  
+</div>
+
+		  
+          <hr>
+<footer class="footer">
+	<div class="container">
+		 <div class="row-fluid">
+			  <div class="span8 footer-div" >
+				  <ul>
+				      <li class="footer-info"><a href="">平价向导</a></li>
+				      <li class="footer-info"><a href="">招聘信息</a></li>
+				      <li class="footer-info"><a href="">关于我们</a></li>
+				      <li class="footer-info"><a href="">联系我们</a></li>
+				      <li class="footer-info"><a href="">合作网站</a></li>
+				      <li class="footer-info"><a href="">API</a></li>
+				      <li class="footer-info"><a href="">博客</a></li>
+				  </ul>
+			  </div>
+		 </div>
+	</div>
+</footer>
+ <!-- /container -->
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="docs/assets/js/jquery.js"></script>
+<script src="docs/assets/js/bootstrap-transition.js"></script>
+<script src="docs/assets/js/bootstrap-alert.js"></script>
+<script src="docs/assets/js/bootstrap-modal.js"></script>
+<script src="docs/assets/js/bootstrap-dropdown.js"></script>
+<script src="docs/assets/js/bootstrap-scrollspy.js"></script>
+<script src="docs/assets/js/bootstrap-tab.js"></script>
+<script src="docs/assets/js/bootstrap-tooltip.js"></script>
+<script src="docs/assets/js/bootstrap-popover.js"></script>
+<script src="docs/assets/js/bootstrap-button.js"></script>
+<script src="docs/assets/js/bootstrap-collapse.js"></script>
+<script src="docs/assets/js/bootstrap-carousel.js"></script>
+<script src="docs/assets/js/bootstrap-typeahead.js"></script>
+<script src="/twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/jquery.js"></script>
+
+</body>
+</html>

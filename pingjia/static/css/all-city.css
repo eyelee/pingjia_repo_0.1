@@ -1,0 +1,9 @@
+.all-city{padding-bototm:10px;text-align:left}
+.all-city h2{font-weight:bold}
+.all-city dl{padding:10px 0;overflow:hidden;line-height:30px;display:inline-block}
+.all-city dt{float:left;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;width:30px;color:#707070;width:30px;line-height:30px}
+.all-city dd{float:left;width:930px;display:inline-block;overflow:hidden}
+.all-city dd a{margin-right:14px;white-space:nowrap;display:inline-block}
+.btn-confirm{margin-top:-10px !important}
+.ac-strong{margin-top:5px !important}
+.ac-input{margin-left:-15px !important}
