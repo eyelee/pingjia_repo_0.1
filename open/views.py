@@ -27,7 +27,10 @@ def ajax_match(request):
             categories=categories[0:10]
             if categories:
                 for item in categories:
-                    values.append(item.name)
+                    only_brand={}
+                    only_brand['name']=item.name
+                    only_brand['url']='/cars/'+item.slug+'/'
+                    values.append(only_brand)
             if len(categories)<10:
                 if len(categories)==0:
                     deepquery=Category.objects
@@ -39,7 +42,10 @@ def ajax_match(request):
                         if parent_item:
                             parent_name=parent_item.name+' '
                         for item in deepquery:
-                            values.append(parent_name+item.name)
+                            to_model={}
+                            to_model['name']=parent_name+item.name
+                            to_model['url']='/cars/'+item.parent+'/'+item.slug+'/'
+                            values.append(to_model)
                         if len(deepquery)<10:
                             categories=Category.objects.filter(parent=parent_slug)
                             for item in deepquery:
@@ -55,7 +61,10 @@ def ajax_match(request):
                     categories=Category.objects.filter(parent=parent_slug)[0:10]
                 if categories:
                     for item in categories:
-                        values.append(parent_name+item.name)
+                        to_model={}
+                        to_model['name']=parent_name+item.name
+                        to_model['url']='/cars/'+item.parent+'/'+item.slug+'/'
+                        values.append(to_model)
             values=values[0:10]            
             to_return["values"]=values
             success=True
@@ -79,29 +88,28 @@ def search(request):
                 if kws.count(''):
                     kws.remove('')
                 if kws:
-                    categories=Category.objects 
+                    categories=Category.objects
                     for item in kws:
-                        categories=categories.filter(keywords__icontains=item) 
-                    if len(categories)>1:
-                        pass
-                    elif len(categories)==1:
-                        if categories[0].parent:
-                           products_data=By_year.objects.filter(brand_slug=categories[0].parent,model_slug=categories[0].slug).order_by('year')
-                           if products_data:
-                              products_data_default=products_data[len(products_data)-1]                       
-                              products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
-                              products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
-                              excerpt_products= products[0:5]
-                              if products and products_daily:
-                                  return render_to_response("search.html",locals())
-                              else:
-                                  return render_to_response("nothingfound.html",locals())
+                        categories=categories.filter(keywords__icontains=item).order_by('slug')
+                    if not categories:
+                        return render_to_response("nothingfound.html",locals()) 
+                    brand_categories=categories.filter(parent=None) 
+                    if brand_categories:
+                        brandinfo=brand_categories[0]
+                        return HttpResponseRedirect('/cars/'+brandinfo.slug+'/')
+                    else:
+                        products_data=By_year.objects.filter(brand_slug=categories[0].parent,model_slug=categories[0].slug).order_by('year')
+                        if products_data:
+                           products_data_default=products_data[len(products_data)-1]                       
+                           products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
+                           products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
+                           excerpt_products= products[0:5]
+                           if products and products_daily:
+                              return render_to_response("search.html",locals())
                            else:
-                              return render_to_response("nothingfound.html",locals()) 
+                              return render_to_response("nothingfound.html",locals())
                         else:
-                           pass
-                    else:     
-                        return render_to_response("nothingfound.html",locals())      
+                           return render_to_response("nothingfound.html",locals())     
                 else:
                     return render_to_response("nothingfound.html",locals())
             else:
@@ -118,13 +126,14 @@ def accurate_products(request,brand_slug=None,model_slug=None,year=None):
               modeltype=Category.objects.filter(slug=model_slug,parent=brand_slug)[0] 
               modeltype={'model_name':modeltype.name,'url':'/cars/'+brand_slug+'/'+model_slug+'/'}
               if year:
-                 products_data_default=products_data.filter(year=year)[0:1]
+                 products_data_default=products_data.filter(year=year)
+                 if not products_data_default:
+                    return render_to_response("nothingfound.html",locals())
+                 products_data_default=products_data_default[0]
                  yeartime={'year':year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+year+'/'}
               else:
                  products_data_default=products_data[len(products_data)-1]
-                 yeartime={'year':products_data_default.year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+str(products_data_default.year)+'/'}
-              if not products_data_default:
-                 return render_to_response("nothingfound.html",locals())                       
+                 yeartime={'year':products_data_default.year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+str(products_data_default.year)+'/'}                    
               products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
               products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
               excerpt_products= products[0:5]
@@ -160,5 +169,12 @@ def guids(request):
         brands_infos.append(brands_info)
     return render_to_response("guids.html",locals())   
 
-def brand(request,brand_slug):
-    return render_to_response("brand_models.html",locals())
+def brand_models(request,brand_slug):
+    if brand_slug:
+        modeltypes=Category.objects.filter(slug=brand_slug)
+        if not modeltypes:
+            return render_to_response("nothingfound.html",locals()) 
+        return render_to_response("brand_models.html",locals())
+    else:
+        return render_to_response("nothingfound.html",locals())    
+    

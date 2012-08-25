@@ -30,7 +30,7 @@ urlpatterns = patterns("",
     ("^guids/$","open.views.guids"),
     ("^cars/(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/(?P<year>\d+)/$","open.views.accurate_products"),
     ("^cars/(?P<brand_slug>[-\w]+)/(?P<model_slug>[-\w]+)/$","open.views.accurate_products"),
-    ("^cars/(?P<brand_slug>[-\w]+)/$","open.views.brand"),
+    ("^cars/(?P<brand_slug>[-\w]+)/$","open.views.brand_models"),
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------
     # This pattern gives us a normal ``Page`` object, so that your

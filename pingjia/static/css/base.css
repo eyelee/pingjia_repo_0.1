@@ -7,5 +7,5 @@ ul li {list-style:none;}
 .header-relative-ul {margin:0;}
 .header-relative-list {height:26px;font-size:14px;cursor:pointer;}
 .header-relative-list:hover{background-color:rgb(192,192,192);}
-.header-relative-list a{color:rgb(0,0,0);margin:2px 4px;line-height:26px;}
+.header-relative-list a{color:rgb(0,0,0);padding-left:4px;line-height:26px;float:left;width:99%;}
 .header-relative-list a:hover{text-decoration:none;}

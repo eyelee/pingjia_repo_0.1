@@ -55,7 +55,7 @@
 <div class="nav-collapse span4">
 <ul class="nav row-fluid">  
 <li class="span8"></li>
-<li class="span4"><a href="#me">注册</a></li>    
+<li class="span4"><a href="#">注册</a></li>    
 </ul>  
 </div><!--/.nav-collapse -->
 </div>
@@ -114,7 +114,7 @@ $(document).ready(function() {
 	  $(".header-relative-list").live("click",function(){
 		 var value=$("a",$(this)).html();
 		 $("#header-search").val(value);
-		 $("#header-search").parent().submit();
+		 /*$("#header-search").parent().submit();*/
 	  })
 	  
 	  $("#header-search").bind("keyup",function(){
@@ -136,7 +136,7 @@ $(document).ready(function() {
 					if(length==0)
 						return;
 					for (i=0;i<length;i++){
-						$(".header-relative-ul").append('<li class="header-relative-list"><a href="#">'+result.values[i]+'</a></li>');
+						$(".header-relative-ul").append('<li class="header-relative-list"><a href="'+result.values[i].url+'">'+result.values[i].name+'</a></li>');
 						}
 					$(".header-relative-search").show();
 					} 

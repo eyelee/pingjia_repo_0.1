@@ -44,7 +44,7 @@ $(document).ready(function() {
 	  $(".relative-list").live("click",function(){
 		 var value=$("a",$(this)).html();
 		 $("#search").val(value);
-		 $("#search").parent().parent().submit();
+		 /*$("#search").parent().parent().submit();*/
 	  })
 	  
 	  $("#search").bind("keyup",function(){
@@ -66,7 +66,7 @@ $(document).ready(function() {
 					if(length==0)
 						return;
 					for (i=0;i<length;i++){
-						$(".relative-ul").append('<li class="relative-list"><a href="#">'+result.values[i]+'</a></li>');
+						$(".relative-ul").append('<li class="relative-list"><a href="'+result.values[i].url+'">'+result.values[i].name+'</a></li>');
 						}
 					$(".relative-search").show();
 					} 
