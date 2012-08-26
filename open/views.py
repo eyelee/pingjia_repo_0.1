@@ -171,9 +171,24 @@ def guids(request):
 
 def brand_models(request,brand_slug):
     if brand_slug:
-        modeltypes=Category.objects.filter(slug=brand_slug)
-        if not modeltypes:
-            return render_to_response("nothingfound.html",locals()) 
+        brandinfo=Category.objects.filter(slug=brand_slug)
+        modeltypes=Category.objects.filter(parent=brand_slug)
+        if not modeltypes or not brandinfo:
+            return render_to_response("nothingfound.html",locals())
+        brandinfo=brandinfo[0]
+        if len(modeltypes)%4==0:
+           num=len(modeltypes)/4
+        else:
+           num=int(len(modeltypes)/4)+1    
+        j=0
+        k=4
+        temps=[]
+        for i in range(num):
+           temp=modeltypes[j:k]
+           temps.append(temp)
+           j=j+4
+           k=k+4
+        modeltypes=temps  
         return render_to_response("brand_models.html",locals())
     else:
         return render_to_response("nothingfound.html",locals())    

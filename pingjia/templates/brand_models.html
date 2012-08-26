@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load open_tags %}
 {% block content %}
-<div class="bread">
-<a href="/">Home</a>&raquo;
-<a href="/cars/">Cars</a>&raquo;Ford
-</div>
+<ul class="breadcrumb breadsearch">
+<li><a href="/">主页</a><span class="divider">&raquo;</span></li>
+<li class="active">{{brandinfo.name}}</li>
+</ul>
 <div class="row">
 <div class="span9">
-<h1>Ford Price Guide</h1>
-<h6>Find out the fair price of a used Ford Car.</h6>
+<h1>{{brandinfo.name}}</h1>
+<h6>选择您要查询的{{brandinfo.name}}具体型号.</h6>
 </div>
 <div class="span3">
 <div class="alice">
@@ -18,247 +18,27 @@
 </div>
 </div>
 <hr>
-<!-- Home Tab -->
-<div class="row">
-<!-- Top Left Block -->
-<div class="span6">
-<h3>Popular: <a href="/cars/ford/f150/">Ford F150</a></h3>
-<p>The <a href="/cars/ford/f150/">Ford F150</a> is trending this week.</p>
-<script src="http://www.google.com/jsapi?key=ABQIAAAArZTpSABRvd2c9KybKwDNQhQ3DjXG-AaZWfuTT8O9FiFon4h60hQ0bRXbkhab_h3SCaPJ-E86rwYF7w"></script>
-<script type="text/javascript">
-var google_images = function(target_id, search_term, count) {
-  var MAIN_DIV_PADDING = 2;
-  var MAIN_DIV_HEIGHT = 300 - MAIN_DIV_PADDING*2;
-  var MAIN_DIV_WIDTH = 376 - MAIN_DIV_PADDING*2; // css dependency: 2px borders
-  var THUMB_WIDTH = 88;
-  var THUMB_PADDING = 1;
-  var THUMB_MARGIN_LEFT = 4;
-  var THUMB_BORDER = 1;
-  var THUMB_X_OFFSET = THUMB_WIDTH + THUMB_MARGIN_LEFT + THUMB_BORDER*2 + THUMB_PADDING*2;
-  var THUMB_Y_OFFSET; 
-  var MAIN_DIV_DIM = [MAIN_DIV_WIDTH, MAIN_DIV_HEIGHT]
-  // Adapted from http://stackoverflow.com/questions/2642994/image-suggestion-with-jquery-from-google.
-  if(typeof(search_term) == 'undefined') {
-    return false;
-  }
-  count = typeof(count) != 'undefined' ? count : 10;
-  if(target_id.indexOf("#") == 0) {
-    target_id = target_id.replace("#","");
-  }
-  google.load('search', '1');
-  function searchComplete(searcher) {
-    // Check that we got results
-    if (searcher.results && searcher.results.length > 0) {
-      // Grab our content div, clear it.
-      var contentDiv = document.getElementById(target_id);
-      if(!contentDiv) return null;
-      contentDiv.innerHTML = '';
-      var results = searcher.results;
-      var gImageMain, gImageThumb;
-      var gImageThumbs = ['<ul id="google-image-thumbs" class="clearfix">'];
-      var imgUrl, imgDim, imgMargins;
-      var imgUrls = [];
-
-      for (var i = 0; i < results.length && i < count; i++) {
-        var result = results[i];
-        imgUrl = unescape(result.url);
-        imgUrls.push(imgUrl);
-        imgDim = getRescaledDim([result.width, result.height], MAIN_DIV_DIM);
-        imgMargins = getImageOffsets(imgDim, MAIN_DIV_DIM);
-        if (i == 0) {
-          gImageMain = [
-            '<div id="google-img-wrapper"><img src="',
-            imgUrl,
-            '" id="google-image-main"',
-            ' style="width:',
-            imgDim[0],
-            'px; height:',
-            imgDim[1],
-            'px; top:',
-            imgMargins[0],
-            'px; left:',
-            imgMargins[1],
-            'px;"/></div>'
-          ].join('');
-        }
-
-        gImageThumb = [
-          '<li style="left:',
-          THUMB_X_OFFSET*i,
-          'px">',
-          '<img src="',
-          imgUrl,
-          '" data-height="',
-          result.height,
-          '" data-width="',
-          result.width,
-          '" class="google-image-thumb-img"/>',
-          '</div>'
-        ].join('');
-        
-        gImageThumbs.push(gImageThumb);
-
-        var pinButton = document.getElementById('pin-button');
-        function repl(url) {
-          return escape(url).replace(/\//g,"%2F");
-        }
-
-        pinButton.href = 'http://pinterest.com/pin/create/button/?url=' + repl(window.location.href+'?ref=pinterest') + '&media=' + repl(result.url);
-        }
-
-        gImageThumbs.push('</ul>');
-        $("#google-product-images").html(gImageMain + gImageThumbs.join(''));
-        $("#google-image-thumbs").on("hover", "li", function (event) {
-          var $thisImg = $(this).find("img");
-          var newSrc = $thisImg.attr("src");
-          var height = $thisImg.data("height");
-          var width = $thisImg.data("width");
-          var scaledDownHeight = Math.min((width / MAIN_DIV_WIDTH) * height, MAIN_DIV_HEIGHT);
-
-          var newDim = getRescaledDim([width, height], MAIN_DIV_DIM);
-          var offsets = getImageOffsets(newDim, MAIN_DIV_DIM);
-
-          if (newSrc) { 
-            var mainImg = $("#google-image-main");
-            $("#google-image-main").attr("src", newSrc);
-            $("#google-image-main").css({"width": newDim[0], "height": newDim[1], "top":offsets[0], "left":offsets[1]});
-          }
-        });
-    }
-
-    if(!window.location.hash) {
-        window.location = window.location + '#p';
-        for(var i=0; i < imgUrls.length; i++){
-          if(imgUrls[i].length > 399) {
-            continue;
-          }
-          
-          $.post("/api/internal/pimg_url/", {'image_url': imgUrls[i], 'product_id': 119741 });
-          
-          }
-    }
-    // imagePreview();
-  }
-
-  // Takes 2 arrays: original and final max dimensions in format [width, height], and returns an array of rescaled dimensions
-  function getRescaledDim(orig_dim, target_dim) {
-    var o_width = orig_dim[0];
-    var o_height = orig_dim[1];
-    var t_width =  target_dim[0];
-    var t_height = target_dim[1];
-    var new_width, new_height;
-    var ratio;
-
-    if (o_width < t_width || o_height < t_height) {
-      return [o_width, o_height]; //dont resize images that fit already in 1 dim
-    }
-
-    if (o_width > o_height) {
-        if (o_width > t_width) {
-            ratio = t_height / o_height;
-            new_width = Math.min(o_width * ratio, t_width);
-        }
-        if (o_height > t_height || true) {
-          new_height = new_width * o_height / o_width;
-          ratio = new_width / o_width;
-          o_height = o_height * ratio;
-        }
-      } 
-    else {
-      if (o_height > t_height) {
-          ratio = t_width / o_width;
-          new_height = Math.min(o_height * ratio, t_height);
-      }
-      if (o_width > t_width || true) {
-          new_width = new_height * o_width / o_height;
-          ratio = new_height / o_height;
-          o_width = o_width * ratio;
-      }
-    }
-
-    return [new_width, new_height];
-  }
-
-  // Returns [top, left] positioning to center an absolutely positioned div based on dimensions provided
-  function getImageOffsets(orig_dim, bounds) {
-    var max_width = bounds[0];
-    var max_height = bounds[1];
-    var obj_width = orig_dim[0];
-    var obj_height = orig_dim[1];
-
-    var top = Math.max((max_height - obj_height) / 2, 0) + MAIN_DIV_PADDING;
-    var left = Math.max((max_width - obj_width) / 2, 0) + MAIN_DIV_PADDING;
-    return [top, left];
-  }
-
-  function OnLoad() {
-    // Our ImageSearch instance.
-    var imageSearch = new google.search.ImageSearch();
-    imageSearch.setRestriction(google.search.ImageSearch.RESTRICT_IMAGESIZE, google.search.ImageSearch.IMAGESIZE_MEDIUM);
-    // imageSearch.setRestriction(google.search.ImageSearch.RESTRICT_IMAGETYPE, google.search.ImageSearch.IMAGETYPE_PHOTO);
-    // imageSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER, google.search.ImageSearch.COLOR_WHITE);
-    imageSearch.setSearchCompleteCallback(this, searchComplete, [imageSearch]);
-    imageSearch.execute(search_term);
-  }
-  google.setOnLoadCallback(OnLoad);
-}
-
-google_images('#google-product-images', "Ford F150 Ford Cars", 4);
-</script>
-<script src="http://www.google.com/uds/?file=search&amp;v=1" type="text/javascript"></script>
-<link href="http://www.google.com/uds/api/search/1.0/daef7c0a56e44cd91d06c2c8e0ca514a/default+zh_CN.css" type="text/css" rel="stylesheet">
-<script src="http://www.google.com/uds/api/search/1.0/daef7c0a56e44cd91d06c2c8e0ca514a/default+zh_CN.I.js" type="text/javascript"></script>
-<div id="google-product-images">
-<div id="google-img-wrapper">
-<img src="http://images.autotrader.com/scaler/620/420/cms/images/cars/ford/f-150/2012/2012-ford-f150/171697.jpg" id="google-image-main" style="width: 372px; height: 248.4px; top: 25.8px; left: 2px;">
-</div>
-<ul id="google-image-thumbs" class="clearfix">
-<li style="left:0px">
-<img src="http://www.lincah.com/wp-content/uploads/2012/07/2013-Ford-F-150-SVT-Raptor-Front-Angle-588x441.jpg" data-height="441" data-width="588" class="google-image-thumb-img">
-</li>
-<li style="left:96px">
-<img src="http://images.autotrader.com/scaler/620/420/cms/images/cars/ford/f-150/2012/2012-ford-f150/171697.jpg" data-height="414" data-width="620" class="google-image-thumb-img">
-</li>
-<li style="left:192px">
-<img src="http://www.1stautos.info/wp-content/uploads/2012/01/2006-Saleen-Ford-F-150-S331-Sport-Truck-Car-Picture-with-exclusive-Saleen-car-interior.jpg" data-height="500" data-width="800" class="google-image-thumb-img">
-</li>
-<li style="left:288px">
-<img src="http://image.dieselpowermag.com/f/9654618/0804dp_10_z+new_diesel_cars+2010_ford_f-150.jpg" data-height="480" data-width="640" class="google-image-thumb-img">
-</li>
-</ul>
-</div>
-</div><!-- End Top Left Block --><!-- Top Right Block -->
-<div class="span6">
-<h3>Most Popular Cars</h3>
-<p>These are the 10 most popular used cars.</p>
-<table class="table table-striped table-condensed ranking-table" width="90%">
-<thead>
-<tr>
-<th width="2%"></th>
-<th>Product</th>
-<th>Recommended Price</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="rank">1</td>
-<td width="50%"><a href="/cars/ford/f150/">Ford F150</a></td>
-<td>$2,995</td>
-</tr>
-<tr>
-<td class="rank">2</td><td width="50%"><a href="/cars/ford/ranger/">Ford Ranger</a></td><td>$2,500</td></tr>
-<tr><td class="rank">3</td><td width="50%"><a href="/cars/ford/explorer/">Ford Explorer</a></td><td>$2,000</td></tr><tr><td class="rank">4</td><td width="50%"><a href="/cars/ford/f-150/">Ford F 150</a></td><td>$2,300</td></tr><tr><td class="rank">5</td><td width="50%"><a href="/cars/ford/econoline/">Ford Econoline</a></td><td>$3,999</td></tr><tr><td class="rank">6</td><td width="50%"><a href="/cars/ford/van/">Ford Van</a></td><td>$5,125</td></tr><tr><td class="rank">7</td><td width="50%"><a href="/cars/ford/f-250/">Ford F 250</a></td><td>$3,500</td></tr><tr><td class="rank">8</td><td width="50%"><a href="/cars/ford/f350/">Ford F350</a></td><td>$5,450</td></tr><tr><td class="rank">9</td><td width="50%"><a href="/cars/ford/f250/">Ford F250</a></td><td>$4,775</td></tr><tr><td class="rank">10</td><td width="50%"><a href="/cars/ford/taurus/">Ford Taurus</a></td><td>$1,900</td></tr>
-</tbody>
+<br>
+<table class="table" width="640" style="table-layout:fixed">
+     <colgroup>
+          <col width="160">
+          <col width="160">
+          <col width="160">
+          <col width="160">
+     </colgroup>
+     <tbody>
+     {% for model_row in modeltypes %}
+            <tr>
+            {% for item in model_row %}
+                <td>
+                    <a href="/cars/{{ item.parent}}/{{ item.slug }}/">
+                        {{item.name}}
+                    </a>
+                </td>
+            {% endfor %}
+            </tr>
+     {% endfor %}
+     </tbody>
 </table>
-</div><!-- End Top Right Block -->
-</div>
-<hr>
-<div class="row"><!-- Bottom Left Block -->
-<div class="span6">
-<h3>Where Ford Cars Are Most Popular</h3>
-<p>Ford Cars aremost popular in <b>Detroit Metro, MI</b>.</p>
-<ol id="locations"><li>Detroit Metro, MI</li><li>Kansas City, MO</li><li>Akron, OH</li><li>Wichita, KS</li><li>Springfield, IL</li><li>Harrisburg, PA</li><li>Memphis, TN</li><li>Worcester, MA</li><li>Rockford, IL</li><li>Lansing, MI</li></ol>
-</div><!-- End Bottom Left Block --><!-- Bottom Right Block -->
-<div class="span6"></div>
-</div>
+<br>
 {% endblock %}
