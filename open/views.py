@@ -197,13 +197,17 @@ def brand_models(request,brand_slug):
 
 @csrf_exempt
 def ajax_image(request):
+    """
+    about google image api,please look up form
+    https://developers.google.com/image-search/v1/jsondevguide?hl=zh-CN#json_snippets_python
+    """
     success = False
     if request.method =='POST':
        post=request.POST.copy()
        if post.has_key('kw'):
           query={}
           query['q']=post['kw']
-          query['imgsz']='small|medium|large|xlarge'
+          query['imgsz']='large'
           query['v']='1.0'
           query_str=urllib.urlencode(query)
           url ='https://ajax.googleapis.com/ajax/services/search/images?'+query_str

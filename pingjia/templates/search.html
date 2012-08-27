@@ -97,7 +97,7 @@
 </table>
 <hr />
 <h3 class="mb10">我想买</h3>
-<form class="form-inline" id="email-subscribe" style="margin-bottom: 2px"><input type="text" id="email-addr" placeholder="请输入邮箱">
+<form class="form-inline" id="email-subscribe" style="margin-bottom:2px;"><input type="text" id="email-addr" placeholder="请输入邮箱">
               &nbsp;
 <input type="submit" value="提交" class="btn" />
 <input type="hidden" id="product_id" value="107505" />
@@ -106,7 +106,7 @@
 <p>当有价格合适的货源发布时，我们会给您发邮件</p>
  </div>
 <div class="span5">
-<div id="myCarousel" class="carousel slide" style="height:300px;" >
+<div id="myCarousel" class="carousel slide">
             <div class="carousel-inner">
               
             </div>
@@ -159,9 +159,9 @@ $(document).ready(function(){
 			var results=result.responseData.results;
 			for(i=0;i<results.length;i++){
 				if(i==0)
-					$(".carousel-inner").append('<div class="item active"><img src="'+results[i].url+'" alt="">');
+					$(".carousel-inner").append('<div class="item active"><img src="'+results[i].url+'" height="280px" alt="">');
 				else
-					$(".carousel-inner").append('<div class="item"><img src="'+results[i].url+'" alt="">');
+					$(".carousel-inner").append('<div class="item"><img src="'+results[i].url+'" height="280px" alt="">');
 			}
 			$(".carousel-inner").parent().append('<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>'+
 					                             '<a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>');
