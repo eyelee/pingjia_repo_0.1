@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load open_tags %}
+{% block content %}
+
+<hr>
+<div class="row"><!-- Bottom Left Block -->
+<div class="span6">
+<h3>Where Ford Cars Are Most Popular</h3>
+<p>Ford Cars aremost popular in <b>Detroit Metro, MI</b>.</p>
+<ol id="locations"><li>Detroit Metro, MI</li><li>Kansas City, MO</li><li>Akron, OH</li><li>Wichita, KS</li><li>Springfield, IL</li><li>Harrisburg, PA</li><li>Memphis, TN</li><li>Worcester, MA</li><li>Rockford, IL</li><li>Lansing, MI</li></ol>
+</div><!-- End Bottom Left Block --><!-- Bottom Right Block -->
+<div class="span6"></div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+	var query={};
+	query["kw"]='bmw';
+	$.ajax({
+		url: "/ajax_image/",
+		type: "POST",
+		data: query,
+		dataType: "json",
+		success: function(result){
+			alert('ok');
+			alert(result);
+			} 
+	});
+
+</script>
+{% endblock %}

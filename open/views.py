@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import re
+import urllib
+import urllib2
 from models import Category,Product,By_year,By_model
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseServerError, HttpResponse
@@ -69,7 +71,7 @@ def ajax_match(request):
             to_return["values"]=values
             success=True
         else:
-            to_return['msg'] = u"Requires keywords"
+            to_return['msg'] = u"Require keywords"
     serialized = simplejson.dumps(to_return)
     if success == True:
         return HttpResponse(serialized, mimetype="application/json")
@@ -192,4 +194,34 @@ def brand_models(request,brand_slug):
         return render_to_response("brand_models.html",locals())
     else:
         return render_to_response("nothingfound.html",locals())    
-    
+
+@csrf_exempt
+def ajax_image(request):
+    success = False
+    if request.method =='POST':
+       post=request.POST.copy()
+       if post.has_key('kw'):
+          query={}
+          query['q']=post['kw']
+          query['imgsz']='small|medium|large|xlarge'
+          query['v']='1.0'
+          query_str=urllib.urlencode(query)
+          url ='https://ajax.googleapis.com/ajax/services/search/images?'+query_str
+          request_http = urllib2.Request(url)
+          response = urllib2.urlopen(request_http)
+          # Process the JSON string.
+          to_return = simplejson.load(response)
+          # now have some fun with the results...
+          success=True
+       else:
+          to_return={'msg':u'Require keywords'}    
+    else:      
+       to_return = {'msg':u'No POST data sent.' } 
+    serialized = simplejson.dumps(to_return)
+    if success:
+       return HttpResponse(serialized, mimetype="application/json")  
+    else:
+       return HttpResponseServerError(serialized, mimetype="application/json")
+   
+def testgoogleapi(request):
+    return render_to_response('testgoogleapi.html')
