@@ -75,7 +75,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50,blank=True, null=True)
     slug = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField()
-    parent = models.CharField(max_length=32,default='N',blank=True,null=True)
+    parent = models.CharField(max_length=32,blank=True,null=True)
     keywords= models.TextField(blank=True,null=True)
     #type = models.ForeignKey(Catype)
     #type_slug = models.CharField(max_length=32,default ='car',blank=True, null=True)
@@ -86,9 +86,11 @@ class Category(models.Model):
 class City(models.Model):
     source = models.ForeignKey(Source)
     name = models.CharField(max_length=50,blank=True, null=True)
-    slug = models.CharField(max_length=32, blank=True, null=True)
+    slug = models.CharField(max_length=32, blank=True, null=True,db_index=True)
+    pinyin= models.CharField(max_length=32, blank=True, null=True,db_index=True)
+    quhao= models.CharField(max_length=32, blank=True, null=True,db_index=True)
     url = models.URLField()
-    parent = models.CharField(max_length=50,default='N',blank=True,null=True)
+    parent = models.CharField(max_length=50,blank=True,null=True,db_index=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
     def __unicode__(self):
         return self.slug
