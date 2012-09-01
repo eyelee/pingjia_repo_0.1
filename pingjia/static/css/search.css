@@ -47,3 +47,9 @@ text.barLabel {
 text.value {
     font-size: 8.0pt;
 }
+#selProvince{width:140px;}
+#selCity{width:140px;}
+.btn-confirm{margin-top:-10px !important}
+.ac-strong{margin-top:5px !important}
+.ac-input{width:200px;}
+.table-striped{float:left;}

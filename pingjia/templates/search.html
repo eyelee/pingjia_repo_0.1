@@ -124,8 +124,24 @@
 
 </div>
 <div class="tab-pane" id="data">
+<div class="span3" style="margin:0;">
 <h3>数据</h3>
 <p>以下是评估价格所用到的数据</p>
+</div>
+<div class="span5">
+  <strong>省市:</strong> 
+		<select name="province" id="selProvince" onChange = "getCity(this.options[this.selectedIndex].value)">
+    	</select>
+    	<select name="city" id="selCity">
+        	<option>北京</option>
+    	</select> 
+        <input class="btn btn-confirm" type="submit" value="筛选">
+</div>
+<div class="span4" style="margin:0;">
+ <strong class="ac-strong">或者</strong>
+ <input type="text" class="ac-input" placeholder="输入城市名、拼音、电话区号…">
+ <button  type="button" class="btn btn-confirm">筛选</button>
+</div>
 <table class="table table-striped">
 <thead><tr><th>标题</th><th>价格</th><th>交易地点</th><th>发布时间</th></tr></thead>
 <tbody>
@@ -146,8 +162,10 @@
 
 {% endblock %}
 {% block js %}
+<script src="/static/js/cityselector.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	initProvince();
 	var query={};
 	query["kw"]=$("#keywordtitle").html();
 	$.ajax({

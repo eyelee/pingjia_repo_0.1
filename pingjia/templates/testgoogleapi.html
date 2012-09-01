@@ -98,13 +98,13 @@ var google_images = function(target_id, search_term, count) {
         
         gImageThumbs.push(gImageThumb);
 
-        var pinButton = document.getElementById('pin-button');
+       /* var pinButton = document.getElementById('pin-button');
         function repl(url) {
           return escape(url).replace(/\//g,"%2F");
         }
 
         pinButton.href = 'http://pinterest.com/pin/create/button/?url=' + repl(window.location.href+'?ref=pinterest') + '&media=' + repl(result.url);
-        }
+        */ }
 
         gImageThumbs.push('</ul>');
         $("#google-product-images").html(gImageMain + gImageThumbs.join(''));
@@ -203,7 +203,7 @@ var google_images = function(target_id, search_term, count) {
   google.setOnLoadCallback(OnLoad);
 }
 
-google_images('#google-product-images', "Ford F150 Ford Cars", 4);
+google_images('#google-product-images', "2000 奥迪 奥迪200", 4);
 </script>
 <script src="http://www.google.com/uds/?file=search&amp;v=1" type="text/javascript"></script>
 <link href="http://www.google.com/uds/api/search/1.0/daef7c0a56e44cd91d06c2c8e0ca514a/default+zh_CN.css" type="text/css" rel="stylesheet">
