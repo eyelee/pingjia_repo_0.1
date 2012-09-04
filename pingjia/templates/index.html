@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}平价网，最权威公平的价格指南{% endblock %}
+{% block meta_description %}平价网，最权威公平的价格指南{% endblock %}
 {% block css %}<link href="/static/css/index.css" rel="stylesheet">{% endblock %}
 {% block content %}
 	<div class="row-fluid">      
@@ -49,7 +50,6 @@ $(document).ready(function() {
 	  
 	  $("#search").bind("keyup",function(){
 		  $(".relative-search").hide();
-		  $(".relative-ul").html("");
 		  var kw=$("#search").val();
 		  kw=trim(kw);
 		  if(kw=='')
@@ -65,6 +65,8 @@ $(document).ready(function() {
 					var length=result.values.length;
 					if(length==0)
 						return;
+					if($(".relative-list").length)
+						$(".relative-ul").html("");  
 					for (i=0;i<length;i++){
 						$(".relative-ul").append('<li class="relative-list"><a href="'+result.values[i].url+'">'+result.values[i].name+'</a></li>');
 						}

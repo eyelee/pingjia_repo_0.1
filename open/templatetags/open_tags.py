@@ -3,7 +3,7 @@
 import time
 import re
 from django import template
-from open.function import Average,Normalprice,Normdistribution
+from open.function import Average,Normalprice,Normaltime,Normdistribution
 register = template.Library()
 
 @register.inclusion_tag("includes/svgrect.html", takes_context=True)
@@ -252,18 +252,12 @@ def price_range(datalist):
         return '￥'+str(min_price)+'-￥'+str(max_price)
             
 @register.simple_tag
-def show_normalprice(price):
-    if price is None:
-        return
+def show_normalprice(price=None):
     return Normalprice(price) 
 
 @register.simple_tag
 def show_normaltime(date):
-    from_format='%Y-%m-%d %H:%M:%S'
-    to_format='%Y年%m月%d日'
-    date=str(date)
-    date=time.strftime(to_format,time.strptime(date,from_format))
-    return date
+    return Normaltime(date)
 
 @register.simple_tag
 def average_price(datalist):

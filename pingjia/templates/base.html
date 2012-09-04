@@ -18,41 +18,37 @@
 <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="/static/docs/examples/images/favicon.ico">
+<link rel="shortcut icon" href="/static/img/favicon.ico">
 <link rel="apple-touch-icon" href="/static/docs/examples/images/apple-touch-icon.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/static/docs/examples/images/apple-touch-icon-72x72.png">
 <link rel="apple-touch-icon" sizes="114x114" href="/static/docs/examples/images/apple-touch-icon-114x114.png">
 </head>
 <body>
+{% ifnotequal name "index" %}
 <div class="navbar navbar-fixed-top" >
-<div class="navbar-inner" style="height:46px;">
+<div class="navbar-inner">
 <div class="container">
 <div class="row-fluid">
-<div class="span5">
-<div style="padding-top: 11px;position:relative;">  
-<form class="form-search" action="/search">
-<input id="header-search" name="kw" type="text" value="{{ kw }}" class="span9 input-medium search-query" style="margin: 0 auto;" placeholder="想买什么？" autocomplete="off" > 
+<div class="span4">
+<div style="margin-top: 6px;position:relative;">  
+<form class="form-search" action="/search" style="margin:0;">
+<input id="header-search" name="kw" type="text" value="{{ kw }}" class="input-medium search-query" placeholder="想买什么？" autocomplete="off" > 
 </form>
-<div class="header-relative-search span9" style="display:none;" >
+<div class="header-relative-search" style="display:none;" >
 <ul class="header-relative-ul">
 </ul>
 </div>   
 </div>
 </div>
 
-<div class="span3">
-<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" >
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</a>
-<a class="brand" href="/"><img src="/static/img/logo_220x33_stroke.png" width="220" height="33" alt="pingjia logo" /></a>
+<div class="span4" style="margin-top:6px;">
+
+<a  href="/" style="margin-left:30px;float:left;"><img src="/static/img/logo_220x33_stroke.png" alt="pingjia logo" /></a>
   
-
 </div>
-<div class="span4"
+<div class="span4">
 
-<div class="nav-collapse span4">
+<div class="nav-collapse">
 <ul class="nav row-fluid">  
 <li class="span8"></li>
 <li class="span4"><a href="#">注册</a></li>    
@@ -67,6 +63,7 @@
 </div>
 </div>
 </div>
+{% endifnotequal %}
 <div class="container">
 {% block content %}{% endblock %}
 </div>
@@ -119,7 +116,6 @@ $(document).ready(function() {
 	  
 	  $("#header-search").bind("keyup",function(){
 		  $(".header-relative-search").hide();
-		  $(".header-relative-ul").html("");
 		  var kw=$("#header-search").val();
 		  kw=trim(kw);
 		  if(kw=='')
@@ -135,6 +131,8 @@ $(document).ready(function() {
 					var length=result.values.length;
 					if(length==0)
 						return;
+					if($(".header-relative-list").length)
+						$(".header-relative-ul").html("");
 					for (i=0;i<length;i++){
 						$(".header-relative-ul").append('<li class="header-relative-list"><a href="'+result.values[i].url+'">'+result.values[i].name+'</a></li>');
 						}

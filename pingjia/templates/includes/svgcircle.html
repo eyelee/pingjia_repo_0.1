@@ -12,7 +12,7 @@
 {% for item in price_marks %}
 <g>
 <line y2="-{{item.mark_price_y}}" y1="-{{item.mark_price_y}}" x2="378" x1="20" style="stroke: rgb(217, 217, 217); stroke-width: 1;"></line>
-<text text-anchor="right" dx="-1em" dy=".3em" y="-{{item.mark_price_y}}" x="0" style="font-size:7pt;">{% show_normalprice item.mark_price %}</text>
+<text text-anchor="right" dx="-1.9em" dy=".3em" y="-{{item.mark_price_y}}" x="0" style="font-size:8pt;">{% show_normalprice item.mark_price %}</text>
 </g>
 {% endfor %}
 {% for item in datepoints %}

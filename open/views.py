@@ -3,16 +3,18 @@
 import re
 import urllib
 import urllib2
-from models import Category,Product,By_year,By_model
+from models import Category,Product,By_year,By_model,City
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseServerError, HttpResponse
 from django.utils import simplejson
 from django.shortcuts import render_to_response
-from function import Average,Normalprice
+from function import Average,Normalprice,Normaltime
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 
-
+def index(request,name):
+    return render_to_response('index.html',locals())
+    
 @csrf_exempt
 def ajax_match(request):
     success = False
@@ -227,5 +229,64 @@ def ajax_image(request):
     else:
        return HttpResponseServerError(serialized, mimetype="application/json")
    
+@csrf_exempt
+def ajax_search_city(request):
+    success = False
+    to_return = {'msg':u'No POST data sent.' }
+    if request.method == "POST":
+        post = request.POST.copy()
+        if post.has_key('citykw'):
+           citykw=post['citykw']
+           if post.has_key('searchtype'):
+               city=City.objects.filter(name=citykw).exclude(parent=0)
+           else:    
+               city=City.objects.filter(Q(name__startswith=citykw)|Q(pinyin__istartswith=citykw)|Q(quhao=citykw)).exclude(parent=0)
+           values=[]
+           for item in city:
+               values.append(item.name)
+           to_return['values']=values
+           success=True
+        else:
+           to_return['msg']='Require keywords'
+    serialized = simplejson.dumps(to_return)
+    if success == True:
+        return HttpResponse(serialized, mimetype="application/json")
+    else:
+        return HttpResponseServerError(serialized, mimetype="application/json")
+           
+
+@csrf_exempt        
+def ajax_city_filter(request):
+    success = False
+    to_return = {'msg':u'No POST data sent.' }
+    if request.method == "POST":
+        post = request.POST.copy()
+        if post.has_key('brandslug') and post.has_key('modelslug') and post.has_key('year') and post.has_key('citykw'):
+           if post['citykw']:
+               products=Product.objects.filter(brand_slug=post['brandslug'],model_slug=post['modelslug'],year=post['year'],city=post['citykw']).order_by('-time')[0:50]
+           else:
+               products=Product.objects.filter(brand_slug=post['brandslug'],model_slug=post['modelslug'],year=post['year']).order_by('-time')[0:50]    
+           values=[]
+           for item in products:
+               product={}
+               product['title']=item.title
+               product['url']=item.url
+               product['price']=Normalprice(item.price)
+               product['place']=item.city
+               if item.region:
+                  product['place']=item.city+'.'+item.region
+               product['time']=Normaltime(item.time)
+               values.append(product)
+           to_return['values']=values
+           success=True
+        else:
+           to_return['msg']='Not enough conditions for search.'      
+    serialized = simplejson.dumps(to_return)
+    if success == True:
+        return HttpResponse(serialized, mimetype="application/json")
+    else:
+        return HttpResponseServerError(serialized, mimetype="application/json")
+ 
+           
 def testgoogleapi(request):
     return render_to_response('testgoogleapi.html')

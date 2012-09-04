@@ -53,3 +53,9 @@ text.value {
 .ac-strong{margin-top:5px !important}
 .ac-input{width:200px;}
 .table-striped{float:left;}
+.relative-city {width:205px;position:absolute;top:28px;left:33px;border:1px solid rgb(127,129,130);background-color:white;}
+.relative-city-ul {margin:0;}
+.relative-city-list {height:20px;font-size:12px;cursor:pointer;}
+.relative-city-list:hover{background-color:rgb(0,85,204);}
+.relative-city-list a{color:rgb(0,0,0);padding-left:4px;line-height:20px;float:left;width:99%;}
+.relative-city-list a:hover{text-decoration:none;}

@@ -1,6 +1,7 @@
 # coding=UTF-8
 import re
 import math
+import time
 
 def Average(datalist):
     r=0
@@ -13,7 +14,7 @@ def Average(datalist):
         result=int(result)
     return result
 
-def Normalprice(price):
+def Normalprice(price=None):
     #resource_price=re.search('\d+(\.\d+)?',str(price))
     #if resource_price is not None:
         #friendly_price=float(resource_price.group())
@@ -21,13 +22,27 @@ def Normalprice(price):
         #return normal_price
     #else:
         #return
+    if price is None:
+        return ''
     if price>=10000:
-        return str(round(price/10000,2))+'万'
+        if round(price/10000,1)==int(price/10000):
+           return '￥'+str(int(price/10000))+'万'
+        else:
+           return '￥'+str(round(price/10000,1))+'万'
     elif price>=100:
-        return str(int(price))
+        return '￥'+str(int(price))
     else:
-        return str(price)
-    
+        return '￥'+str(price)
+
+def Normaltime(date=None):
+    if date is None:
+        return ''
+    from_format='%Y-%m-%d %H:%M:%S'
+    to_format='%Y年%m月%d日'
+    date=str(date)
+    date=time.strftime(to_format,time.strptime(date,from_format))
+    return date
+   
 def Normdistribution(x,u=0,sigma=0.4):
     x=float(x)/200
     u=float(u)/200
