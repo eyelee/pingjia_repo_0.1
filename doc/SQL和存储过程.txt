@@ -186,3 +186,19 @@ CREATE PROCEDURE sync_by_city()
 // 
 DELIMITER ;
 */
+
+/*事务，部署服务器后用于每天定时同步open_product表中的新插入的数据到open_by_year和open_by_model中*/
+set global event_scheduler=1;
+delimiter //
+DROP EVENT  IF EXISTS product_sync_event //
+create EVENT product_sync_event 
+ON SCHEDULE 
+EVERY 24 HOUR
+STARTS concat(date_format(now(),'%Y-%m-%d'),' 23:00:00')
+on completion preserve ENABLE
+do
+begin
+    call sync_by_model();
+	call sync_by_year();
+end;//
+DELIMITER ;

@@ -203,26 +203,39 @@ def ajax_image(request):
     about google image api,please look up form
     https://developers.google.com/image-search/v1/jsondevguide?hl=zh-CN#json_snippets_python
     """
-    success = False
+    success = False    
+    to_return = {'msg':u'No POST data sent.' }
     if request.method =='POST':
        post=request.POST.copy()
        if post.has_key('kw'):
           query={}
           query['q']=post['kw']
-          query['imgsz']='large'
+          query['imgsz']='xlarge'
+          query['rsz']='8'
           query['v']='1.0'
           query_str=urllib.urlencode(query)
           url ='https://ajax.googleapis.com/ajax/services/search/images?'+query_str
           request_http = urllib2.Request(url)
           response = urllib2.urlopen(request_http)
           # Process the JSON string.
-          to_return = simplejson.load(response)
+          data_return = simplejson.load(response)
           # now have some fun with the results...
+          pic=data_return['responseData']['results']
+          values=[]
+          for item in pic:
+              try:
+                  pic_response = urllib2.urlopen(urllib2.Request(item['url'])) 
+              except:
+                  continue 
+              else:
+                  values.append(item['url'])
+              if len(values)>3:
+                  break  
+          to_return['values']=values   
           success=True
        else:
           to_return={'msg':u'Require keywords'}    
-    else:      
-       to_return = {'msg':u'No POST data sent.' } 
+          
     serialized = simplejson.dumps(to_return)
     if success:
        return HttpResponse(serialized, mimetype="application/json")  

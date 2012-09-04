@@ -63,12 +63,12 @@
 
 
 <ul class="nav nav-tabs">
-<li class="active"><a href="#report" data-toggle="tab">价格报告</a></li>
-<li class=""><a href="#data" data-toggle="tab">全部数据</a></li>
+<li class="active"><a href="#report" data-toggle="tab" class="report-link-tab">价格报告</a></li>
+<li class=""><a href="#data" data-toggle="tab" class="data-link-tab">全部数据</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" style="overflow:visible;">
 <div class="tab-pane active" id="report">
- <div class="tab-content">
+ <div class="tab-content" style="overflow:visible;">
   <div class="row">
     <div class="span6">
 <h3>平价网参考价</h3>
@@ -99,7 +99,7 @@
 <hr />
 <h3>
 评估报告所用数据
-<span class="small">(<a href="#data" data-toggle="tab" class="">更多</a>)</span>
+<span class="small">(<a href="#data" data-toggle="tab" class="data-link">更多</a>)</span>
 </h3>
 <table class="table table-condensed">
 <thead>
@@ -125,8 +125,9 @@
 <p>当有价格合适的货源发布时，我们会给您发邮件</p>
  </div>
 <div class="span5">
-<div id="myCarousel" class="carousel slide">
-            <div class="carousel-inner">
+<div id="myCarousel" class="carousel slide" style="height:280px;">
+            <div id="pic-loading"><img src="/static/img/loading.gif" width="380px" height="280px"></div>
+            <div class="carousel-inner" style="dispaly:none;">
               
             </div>
 </div>
@@ -199,16 +200,23 @@ $(document).ready(function(){
 		data: query,
 		dataType: "json",
 		success: function(result){
-			var results=result.responseData.results;
+			$('#pic-loading').hide();
+			var results=result.values;
 			for(i=0;i<results.length;i++){
 				if(i==0)
-					$(".carousel-inner").append('<div class="item active"><img src="'+results[i].url+'" height="280px" alt="">');
+					$(".carousel-inner").append('<div class="item active"><img src="'+results[i]+'" width="380px" height="280px" alt="">');
 				else
-					$(".carousel-inner").append('<div class="item"><img src="'+results[i].url+'" height="280px" alt="">');
+					$(".carousel-inner").append('<div class="item"><img src="'+results[i]+'" width="380px" height="280px" alt="">');
 			}
 			$(".carousel-inner").parent().append('<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>'+
-					                             '<a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>');
+				                             '<a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>');
+			$(".carousel-inner").show();	
 			} 
+	});
+	
+	$(".data-link").click(function(){
+	  $(".report-link-tab").parent().removeClass('active');
+      $(".data-link-tab").parent().addClass('active');
 	});
 })	
 </script>
