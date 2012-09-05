@@ -252,6 +252,7 @@ INSTALLED_APPS = (
     "djcelery",
     "dynamic_scraper",
     "open",
+    "dim",
     "testapp",
 )
 
