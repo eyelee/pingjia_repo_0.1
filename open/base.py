@@ -1,7 +1,7 @@
 from open.models import Category,City
 from datetime import date
 
-cityList= City.objects.filter(parent=None).values()
+cityList= City.objects.exclude(parent=0).values()
 brandList=Category.objects.filter(parent=None).values()
 
 

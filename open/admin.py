@@ -2,8 +2,8 @@ from django.contrib import admin
 from open.models import Source, Article,Product,Category,City
 
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'url_', 'brand','city_slug','cat_slug','scraper')
-    list_display_links = ('name',)
+    list_display = ('id', 'name', 'url_', 'brand','scraper')
+    list_display_links = ('id','name',)
     
     def url_(self, instance):
         return '<a href="%s" target="_blank">%s</a>' % (instance.url, instance.url)
