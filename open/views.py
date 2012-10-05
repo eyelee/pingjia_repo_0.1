@@ -219,7 +219,7 @@ def ajax_image(request):
        post=request.POST.copy()
        if post.has_key('kw'):
           query={}
-          query['q']=post['kw']
+          query['q']=post['kw'].encode("utf8")
           query['imgsz']='xlarge'
           query['rsz']='8'
           query['v']='1.0'
