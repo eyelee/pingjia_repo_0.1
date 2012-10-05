@@ -1,0 +1,1 @@
+update open_product set time= subdate(time,INTERVAL 1 YEAR) WHERE time > curdate();

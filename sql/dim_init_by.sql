@@ -1,0 +1,151 @@
+/*存储过程，初始化open_by_model并初始化open_procedure_mark中相关标记，
+每次执行等同于处理执行时open_product中的所有数据：*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS init_by_model//
+CREATE PROCEDURE init_by_model()
+BEGIN
+truncate table open_by_model;
+delete from open_procedure_mark where name='sync_by_model';
+insert into open_by_model(date,avg_price,units,year,brand_slug,model_slug) select DATE_FORMAT(time,'%Y-%m-%d') as date,AVG(price) as avg_price,count(*) as units,year,brand_slug,model_slug from open_product group by DATE_FORMAT(time,'%Y%m%d'),year,brand_slug,model_slug;
+insert into open_procedure_mark(name,mark_id) select 'sync_by_model', max(id) from open_product;
+END
+// 
+DELIMITER ;
+
+/*存储过程，初始化open_by_year并初始化open_procedure_mark中相关标记，
+每次执行等同于处理执行时open_product中的所有数据：*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS init_by_year//
+CREATE PROCEDURE init_by_year()
+BEGIN
+truncate table open_by_year;
+delete from open_procedure_mark where name='sync_by_year';
+insert into open_by_year(avg_price,price_range_min,price_range_max,units,year,brand_slug,model_slug) select AVG(price) as avg_price,AVG(price)*0.9 as price_range_min,AVG(price)*1.1 as price_range_max,count(*) as units,year,brand_slug,model_slug from open_product group by brand_slug,model_slug,year;
+insert into open_procedure_mark(name,mark_id) select 'sync_by_year', max(id) from open_product;
+END
+// 
+DELIMITER ;
+
+/*存储过程，初始化open_by_city并初始化open_procedure_mark中相关标记，
+每次执行等同于处理执行时open_product中的所有数据：*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS init_by_city//
+CREATE PROCEDURE init_by_city()
+BEGIN
+truncate table open_by_city;
+delete from open_procedure_mark where name='sync_by_city';
+insert into open_by_city(date,avg_price,units,city_slug,brand_slug,model_slug) select DATE_FORMAT(time,'%Y-%m-%d') as 
+date,AVG(price) as avg_price,count(*) as units,city_slug,brand_slug,model_slug from open_product group by DATE_FORMAT(time,'%Y%m%d'),brand_slug,model_slug,city_slug;
+insert into open_procedure_mark(name,mark_id) select 'sync_by_city', max(id) from open_product;
+END
+// 
+DELIMITER ;
+
+
+/*存储过程同步open_product中新的数据到open_by_model：*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS sync_by_model//
+CREATE PROCEDURE sync_by_model()
+BEGIN
+declare insert_count bigint(19) DEFAULT 0;
+declare update_count bigint(19) DEFAULT 0;
+declare v_date date DEFAULT NULL;
+declare v_avg_price decimal(10,1) DEFAULT NULL;
+declare v_units int(11);
+declare v_year int(11);
+declare v_brand_slug varchar(50) DEFAULT NULL;
+declare v_model_slug varchar(50) DEFAULT NULL;
+declare finish boolean;
+declare record int(11);
+declare new_mark_id int(11);
+DECLARE rs CURSOR FOR
+select DATE_FORMAT(time,'%Y-%m-%d') as date,AVG(price) as avg_price,count(*) as units,year,brand_slug,model_slug 
+from open_product where id >(select mark_id from open_procedure_mark where name='sync_by_model')
+group by DATE_FORMAT(time,'%Y%m%d'),year,brand_slug,model_slug;
+declare CONTINUE HANDLER FOR NOT FOUND SET finish = true;
+select max(id) into new_mark_id from open_product;
+set finish=false;
+OPEN rs;
+myLoop:LOOP
+FETCH rs INTO v_date,v_avg_price,v_units,v_year,v_brand_slug,v_model_slug; 
+if(finish)then 
+leave myLoop;
+else  
+    select count(*) into record from open_by_model where date=v_date and year=v_year and brand_slug=v_brand_slug and model_slug=v_model_slug;
+    if(record>0)THEN
+       update open_by_model set avg_price=(avg_price*units+v_avg_price*v_units)/(units+v_units),units=units+v_units 
+       where date=v_date and year=v_year and brand_slug=v_brand_slug and model_slug=v_model_slug;
+       set update_count=update_count+1;
+    else
+       insert into open_by_model(date,avg_price,units,year,brand_slug,model_slug)
+       values(v_date,v_avg_price,v_units,v_year,v_brand_slug,v_model_slug);
+       set insert_count=insert_count+1;
+    end if;
+end if;
+END LOOP;
+CLOSE rs; 
+update open_procedure_mark set mark_id=new_mark_id where name='sync_by_model';
+select insert_count as 插入 ,update_count as 更新;
+END
+// 
+DELIMITER ;
+
+/*存储过程同步open_product中新的数据到open_by_year：*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS sync_by_year//
+CREATE PROCEDURE sync_by_year()
+BEGIN
+declare insert_count bigint(19) DEFAULT 0;
+declare update_count bigint(19) DEFAULT 0;
+declare v_avg_price decimal(10,1) DEFAULT NULL;
+declare v_price_range_min decimal(10,1) DEFAULT NULL;
+declare v_price_range_max decimal(10,1) DEFAULT NULL;
+declare v_units int(11);
+declare v_year int(11);
+declare v_brand_slug varchar(50) DEFAULT NULL;
+declare v_model_slug varchar(50) DEFAULT NULL;
+declare finish boolean;
+declare record int(11);
+declare new_mark_id int(11);
+DECLARE rs CURSOR FOR
+select AVG(price) as avg_price,AVG(price)*0.9 as price_range_min,AVG(price)*1.1 as price_range_max,count(*) as units,year,brand_slug,model_slug 
+from open_product where id >(select mark_id from open_procedure_mark where name='sync_by_year')
+group by year,brand_slug,model_slug;
+declare CONTINUE HANDLER FOR NOT FOUND SET finish = true;
+select max(id) into new_mark_id from open_product;
+set finish=false;
+OPEN rs;
+myLoop:LOOP
+FETCH rs INTO v_avg_price,v_price_range_min,v_price_range_max,v_units,v_year,v_brand_slug,v_model_slug; 
+if(finish)then 
+leave myLoop;
+else  
+    select count(*) into record from open_by_year where year=v_year and brand_slug=v_brand_slug and model_slug=v_model_slug;
+    if(record>0)THEN
+       update open_by_year set avg_price=(avg_price*units+v_avg_price*v_units)/(units+v_units),units=units+v_units,
+       price_range_min=0.9*(avg_price*units+v_avg_price*v_units)/(units+v_units),
+       price_range_max=1.1*(avg_price*units+v_avg_price*v_units)/(units+v_units)
+       where  year=v_year and brand_slug=v_brand_slug and model_slug=v_model_slug;
+       set update_count=update_count+1;
+    else
+       insert into open_by_year(avg_price,price_range_min,price_range_max,units,year,brand_slug,model_slug)
+       values(v_avg_price,v_price_range_min,v_price_range_max,v_units,v_year,v_brand_slug,v_model_slug);
+       set insert_count=insert_count+1;
+    end if;
+end if;
+END LOOP;
+CLOSE rs; 
+update open_procedure_mark set mark_id=new_mark_id where name='sync_by_year';
+select insert_count as 插入 ,update_count as 更新;
+END
+// 
+DELIMITER ;
+
+/*存储过程同步open_product中新的数据到open_by_city：(待定，模型可能再变，现有by_city模型无实际意义)
+DELIMITER //
+DROP PROCEDURE IF EXISTS sync_by_city//
+CREATE PROCEDURE sync_by_city()
+
+// 
+DELIMITER ;
+*/
