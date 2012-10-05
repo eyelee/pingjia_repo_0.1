@@ -2,11 +2,10 @@
 {% load open_tags %}
 {% block title %}
   平价网，
-{% if brandcate and modeltype %}
-{% if yeartime %}{{yeartime.year}} {% endif %}
-{{brandcate.brand_name}} {{modeltype.model_name}}
-{% else %}
+{% if kw %}
 {{ kw }}
+{% else %}
+{{yeartime.year}} {{brandcate.brand_name}} {{modeltype.model_name}}
 {% endif %}
 {% endblock %}
 
@@ -27,32 +26,30 @@
   <li>
     <a href="/">主页</a> <span class="divider">&raquo;</span>
   </li>
-{% if brandcate and modeltype %}
+{% if kw %}
+<li class="active">{{ kw }}</li>
+{% else %}
   <li>
     <a href="{{brandcate.url}}">{{brandcate.brand_name}}</a> <span class="divider">&raquo;</span>
   </li>
   <li>
     <a href="{{modeltype.url}}">{{modeltype.model_name}}</a> <span class="divider">&raquo;</span>
   </li>
-{% if yeartime %}
   <li>
     <a href="{{yeartime.url}}">{{yeartime.year}}</a>
   </li>
-{% endif %}
-{% else %}
-  <li class="active">{{ kw }}</li>
 {% endif %}
   
 
 </ul>
 <div class="row">
   <div class="span9">
-   {% if brandcate and modeltype %}
-   <h1>{{products_data_default.year}} {{brandcate.brand_name}} {{modeltype.model_name}}</h1>
-   <input type="hidden" id="keywordtitle" value="{{products_data_default.year}} {{brandcate.brand_name}} {{modeltype.model_name}}">
+   {% if kw  %}
+   <h1>{{kw}}</h1>
+   <input type="hidden" id="keywordtitle" value="{{products_data_default.year}} {{brandcate.name}} {{modeltype.name}}">
    {% else %}
-   <h1>{{ kw }}</h1>
-   <input type="hidden" id="keywordtitle" value="{{kw}} {{products_data_default.year}}">
+   <h1>{{yeartime.year}} {{brandcate.brand_name}} {{modeltype.model_name}}</h1>
+   <input type="hidden" id="keywordtitle" value="{{yeartime.year}} {{brandcate.brand_name}} {{modeltype.model_name}}">
    {% endif %}
   </div>
   <div class="span3">

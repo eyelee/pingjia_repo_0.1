@@ -108,7 +108,9 @@ def search(request):
                            if products_data_default:
                               products_data_default=products_data_default[0]
                            else:
-                              products_data_default=products_data[len(products_data)-1]                      
+                              products_data_default=products_data[len(products_data)-1] 
+                           brandcate=Category.objects.filter(slug=products_data_default.brand_slug,parent=None)[0]
+                           modeltype=Category.objects.filter(slug=products_data_default.model_slug,parent=products_data_default.brand_slug)[0]                      
                            products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
                            products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
                            excerpt_products= products[0:5]
