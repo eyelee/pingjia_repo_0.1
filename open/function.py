@@ -24,15 +24,21 @@ def Normalprice(price=None):
         #return
     if price is None:
         return ''
-    if price>=10000:
-        if round(price/10000,1)==int(price/10000):
-           return '￥'+str(int(price/10000))+'万'
-        else:
-           return '￥'+str(round(price/10000,1))+'万'
-    elif price>=100:
-        return '￥'+str(int(price))
-    else:
-        return '￥'+str(price)
+    if round(price,1)==int(price):
+        return '￥'+str(int(price))+'万'
+    elif round(price,1)==int(price)+1:
+        return '￥'+str(int(price)+1)+'万'
+    else :
+        return '￥'+str(price)+'万'
+    #if price>=10000:
+        #if round(price/10000,1)==int(price/10000):
+           #return '￥'+str(int(price/10000))+'万'
+        #else:
+           #return '￥'+str(round(price/10000,1))+'万'
+    #elif price>=100:
+        #return '￥'+str(int(price))
+    #else:
+        #return '￥'+str(price)
 
 def Normaltime(date=None):
     if date is None:

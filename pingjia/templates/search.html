@@ -48,11 +48,12 @@
 <div class="row">
   <div class="span9">
    {% if brandcate and modeltype %}
-   <h1>{% if yeartime %}{{yeartime.year}} {% endif %}{{brandcate.brand_name}} {{modeltype.model_name}}</h1>
+   <h1>{{products_data_default.year}} {{brandcate.brand_name}} {{modeltype.model_name}}</h1>
+   <input type="hidden" id="keywordtitle" value="{{products_data_default.year}} {{brandcate.brand_name}} {{modeltype.model_name}}">
    {% else %}
    <h1>{{ kw }}</h1>
+   <input type="hidden" id="keywordtitle" value="{{kw}} {{products_data_default.year}}">
    {% endif %}
-   <input type="hidden" id="keywordtitle" value="cars {{products_data_default.brand_slug}} {{products_data_default.model_slug}}">
   </div>
   <div class="span3">
   <button type="submit" class="btn btn-primary" href="#">

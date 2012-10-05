@@ -104,7 +104,11 @@ def search(request):
                     else:
                         products_data=By_year.objects.filter(brand_slug=categories[0].parent,model_slug=categories[0].slug).order_by('year')
                         if products_data:
-                           products_data_default=products_data[len(products_data)-1]                       
+                           products_data_default=products_data.filter(year='2010')
+                           if products_data_default:
+                              products_data_default=products_data_default[0]
+                           else:
+                              products_data_default=products_data[len(products_data)-1]                      
                            products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
                            products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
                            excerpt_products= products[0:5]
@@ -136,7 +140,11 @@ def accurate_products(request,brand_slug=None,model_slug=None,year=None):
                  products_data_default=products_data_default[0]
                  yeartime={'year':year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+year+'/'}
               else:
-                 products_data_default=products_data[len(products_data)-1]
+                 products_data_default=products_data.filter(year='2010')
+                 if products_data_default:
+                    products_data_default=products_data_default[0]
+                 else:
+                    products_data_default=products_data[len(products_data)-1]
                  yeartime={'year':products_data_default.year,'url':'/cars/'+brand_slug+'/'+model_slug+'/'+str(products_data_default.year)+'/'}                    
               products_daily=By_model.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-date')[0:30]
               products=Product.objects.filter(brand_slug=products_data_default.brand_slug,model_slug=products_data_default.model_slug,year=products_data_default.year).order_by('-time')[0:50]  
