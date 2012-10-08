@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load open_tags %}
+{% block title %}
+  平价网，
+{% if brandcate and modeltype %}
+{% if yeartime %}{{yeartime.year}} {% endif %}
+{{brandcate.brand_name}} {{modeltype.model_name}}
+{% else %}
+{{ kw }}
+{% endif %}
+{% endblock %}
+
+{% block meta_description %}
+{% if brandcate and modeltype %}
+{% if yeartime %}{{yeartime.year}} {% endif %}
+{{brandcate.brand_name}} {{modeltype.model_name}}
+{% else %}
+{{ kw }}
+{% endif %}
+{% endblock %}
+
+{% block css %}<link href="/static/css/search.css" rel="stylesheet">{% endblock %}
+{% block content %}
+<div class="span12">
+<div class="tabbable">
+<ul class="breadcrumb breadsearch">
+  <li>
+    <a href="/">主页</a> <span class="divider">&raquo;</span>
+  </li>
+{% if brandcate and modeltype %}
+  <li>
+    <a href="{{brandcate.url}}">{{brandcate.brand_name}}</a> <span class="divider">&raquo;</span>
+  </li>
+  <li>
+    <a href="{{modeltype.url}}">{{modeltype.model_name}}</a> <span class="divider">&raquo;</span>
+  </li>
+{% if yeartime %}
+  <li>
+    <a href="{{yeartime.url}}">{{yeartime.year}}</a>
+  </li>
+{% endif %}
+{% else %}
+  <li class="active">{{ kw }}</li>
+{% endif %}
+  
+
+</ul>
+<div class="row">
+  <div class="span9">
+   {% if brandcate and modeltype %}
+   <h1 id="keywordtitle">{% if yeartime %}{{yeartime.year}} {% endif %}{{brandcate.brand_name}} {{modeltype.model_name}}</h1>
+   {% else %}
+   <h1 id="keywordtitle">{{ kw }}</h1>
+   {% endif %}
+  </div>
+  <div class="span3">
+  <button type="submit" class="btn btn-primary" href="#">
+  <i class="icon-plus-sign icon-white"></i>
+  添加到观察列表
+  </button>
+  </div>
+</div>
+
+
+<ul class="nav nav-tabs">
+<li class="active"><a href="#report" data-toggle="tab" class="report-link-tab">价格报告</a></li>
+<li class=""><a href="#data" data-toggle="tab" class="data-link-tab">全部数据</a></li>
+</ul>
+<div class="tab-content" style="overflow:visible;">
+<div class="tab-pane active" id="report">
+ <div class="tab-content" style="overflow:visible;">
+  <div class="row">
+    <div class="span6">
+<h3>平价网参考价</h3>
+     <div class="big_price">
+     {% show_normalprice products_data_default.avg_price %}
+     </div>
+ <h3>可以接受的价格区间</h3>
+     <div class="price_range">
+	 {% show_normalprice products_data_default.price_range_min %}-{% show_normalprice products_data_default.price_range_max %}
+	 </div>
+
+<form class="form-horizontal inline well" id="review-mini" style="padding-bottom:5px;">
+<div class="control-group">
+<label class="control-label" style=" font-size: 15px;">你推荐这个产品吗</label>
+<div class="controls">
+<label class="radio inline">
+<input type="radio" class="radio s" name="recommended" value="1"> 是
+</label>
+<label class="radio inline">
+<input type="radio" class="radio s" name="recommended" value="0">否
+</label>
+</div>
+</div>
+</form>
+
+<h3>产品年代</h3>
+{% show_availableyear %}
+<hr />
+<h3>
+评估报告所用数据
+<span class="small">(<a href="#data" data-toggle="tab" class="data-link">更多</a>)</span>
+</h3>
+<table class="table table-condensed">
+<thead>
+<tr><th width="85%">标题</th><th>价格</th></tr>
+</thead>
+<tbody>
+{% for item in excerpt_products %}
+<tr>
+<td><a href="{{ item.url }}" target="_blank">{{ item.title }}</a></td>
+<td>{% show_normalprice item.price %}</td>
+</tr>
+{% endfor %}                   
+</tbody>
+</table>
+<hr />
+<h3 class="mb10">我想买</h3>
+<form class="form-inline" id="email-subscribe" style="margin-bottom:2px;"><input type="text" id="email-addr" placeholder="请输入邮箱">
+              &nbsp;
+<input type="submit" value="提交" class="btn" />
+<input type="hidden" id="product_id" value="107505" />
+<input type="hidden" id="keyword_id" name="keyword" value="2008 BMW 5 Series" />
+</form>
+<p>当有价格合适的货源发布时，我们会给您发邮件</p>
+ </div>
+<div class="span5">
+<div id="myCarousel" class="carousel slide" style="height:280px;">
+            <div id="pic-loading"><img src="/static/img/loading.gif" width="380px" height="280px"></div>
+            <div class="carousel-inner" style="dispaly:none;">
+              
+            </div>
+</div>
+<hr>
+ <div id="charts">
+ {% showrect %}
+ <hr>
+ {% showcircle %}
+</div>
+</div>
+</div>
+   
+ </div>
+
+</div>
+<div class="tab-pane" id="data">
+<div class="span3" style="margin:0;">
+<h3>数据</h3>
+<p>以下是评估价格所用到的数据</p>
+</div>
+<div class="span5">
+  <strong>省市:</strong> 
+		<select name="province" id="selProvince">
+    	</select>
+    	<select name="city" id="selCity">
+    	</select>
+        <input id="cityfilter" class="btn btn-confirm" type="button" value="筛选">
+</div>
+<div class="span4" style="margin:0;position:relative;">
+ <strong class="ac-strong">或者</strong>
+ <input id="citykw" type="text" class="ac-input" placeholder="输入城市名、拼音、电话区号…" autocomplete="off">
+ <input type="hidden" name="brandslug" id="brandslug" value="{{products_data_default.brand_slug}}">
+ <input type="hidden" name="modelslug" id="modelslug" value="{{products_data_default.model_slug}}">
+ <input type="hidden" name="year" id="year" value="{{products_data_default.year}}">
+ <input id="citysearch" class="btn btn-confirm" type="button" value="筛选">
+ <div class="relative-city" style="display:none;" >
+ <ul class="relative-city-ul">
+ </ul>
+ </div>
+</div>
+<table id="products-table" class="table table-striped">
+<thead><tr><th>标题</th><th>价格</th><th>交易地点</th><th>发布时间</th></tr></thead>
+<tbody>
+{% for item in products %}
+<tr>
+<td><a href="{{ item.url }}" target="_blank">{{ item.title }}</a></td>
+<td>{% show_normalprice item.price %}</td>
+<td>{{ item.city }}{% if item.region %}.{{ item.region }}{% endif %}</td>
+<td>{% show_normaltime item.time %}</td>
+</tr>
+{% endfor %} 
+</tbody>
+</table>
+<div id="loading" style="float:left;width:100%;display:none;"><div style="width:500px;margin:auto;"><img src="/static/img/loading.gif"></div></div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="/static/js/cityselector.js"></script>
+<script src="/static/js/google_img.js"></script>
+{% endblock %}

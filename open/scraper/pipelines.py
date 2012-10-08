@@ -14,6 +14,9 @@ class DjangoWriterPipeline(object):
             #spider.log("spider: " + spider.name)
             spider.log("item time is: " + item['time'])
             item['time']=process_date(item['time'])
+            # to be added： 
+            # drop item if price is null
+            # drop item if time > now();
             
         try:
             #if (item == ArticleItem):

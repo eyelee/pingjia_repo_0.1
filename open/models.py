@@ -10,11 +10,12 @@ from dynamic_scraper.models import Scraper, SchedulerRuntime
 """
 class Source(models.Model):
     name = models.CharField(max_length=32)
-    #url = models.URLField()
     url = models.CharField(max_length=50)
+    url_source = models.URLField(null=True)
     brand = models.CharField(max_length=32,null=True,blank=True)
     city_slug = models.CharField(max_length=32,null=True,blank=True)
     cat_slug = models.CharField(max_length=32,null=True,blank=True)
+    priority = models.IntegerField(null=True)
     #model = models.CharField(max_length=50,null=True,blank=True)
     scraper = models.ForeignKey(Scraper, blank=True, null=True, on_delete=models.SET_NULL)
     scraper_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
@@ -91,7 +92,8 @@ class City(models.Model):
     quhao= models.CharField(max_length=32, blank=True, null=True,db_index=True)
     url = models.URLField()
     parent = models.CharField(max_length=50,blank=True,null=True,db_index=True)
-    checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)  
+    checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
+    priority = models.IntegerField(null=True)  
     def __unicode__(self):
         return self.slug
     
