@@ -6,8 +6,10 @@ from scrapy.contrib_exp.djangoitem import DjangoItem
 from dynamic_scraper.models import Scraper, SchedulerRuntime
 
 """
-    Source为搜索爬虫用来抓取数据url来源，一般通过url里含有的品牌 brand，城市city_slug，或者产品类别(cat_slug)等特征信息构建出来
+    Source为搜索爬虫用来抓取数据url来源，一般通过url里含有的品牌 brand，城市city_slug，
+    或者产品类别(cat_slug)等特征信息构建出来
 """
+
 class Source(models.Model):
     name = models.CharField(max_length=32)
     url = models.CharField(max_length=50)
@@ -22,7 +24,6 @@ class Source(models.Model):
     
     def __unicode__(self):
         return self.name
-
 
 class Article(models.Model):
     title = models.CharField(max_length=200)

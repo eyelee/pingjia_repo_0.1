@@ -16,7 +16,15 @@ def print_urls(source=None,brand=None):
     urls= urls_from_brand(source,brand)
     for url in urls:
         print url
-   
+        
+def urls_from_priority(source=None,priority=None):
+    scrap_urls=[]
+    pages=range(1,priority+1)
+    for page  in pages:
+        url = source+'ershouche/o'+ str(page) + '/'
+        scrap_urls.append(url)
+    return scrap_urls
+        
 """   
         for cat in category 
         if self.scraper.pagination_type != 'N':

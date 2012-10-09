@@ -30,8 +30,7 @@ class DjangoWriterPipeline(object):
             
             item.save()
             spider.action_successful = True
-            spider.log("Item saved.", log.INFO)
-            
+            spider.log("Item saved.", log.INFO)           
                 
         except IntegrityError, e:
             spider.log(str(e), log.ERROR)
