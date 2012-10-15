@@ -5,6 +5,8 @@ from dynamic_scraper.models import SchedulerRuntime
 from open.scraper.spiders import ProductSpider
 from open.base import process_date
 #from open.models import ArticleItem
+#from dynamic_scraper.pipelines import ImagesPipeline
+#from dynamic_scraper.pipelines import DjangoImagesPipeline
 
 class DjangoWriterPipeline(object):
     
@@ -14,10 +16,9 @@ class DjangoWriterPipeline(object):
             #spider.log("spider: " + spider.name)
             spider.log("item time is: " + item['time'])
             item['time']=process_date(item['time'])
-            # to be added： 
+            # to do:
             # drop item if price is null
-            # drop item if time > now();
-            
+            # drop item if time > no            
         try:
             #if (item == ArticleItem):
                 #item['news_website'] = spider.ref_object

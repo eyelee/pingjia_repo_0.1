@@ -24,15 +24,17 @@ SPIDER_MODULES = ['dynamic_scraper.spiders', 'open.scraper','open.spiders']
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
 ITEM_PIPELINES = [
+    #'scrapy.contrib.pipeline.images.ImagesPipeline',
     'dynamic_scraper.pipelines.DjangoImagesPipeline',
     'dynamic_scraper.pipelines.ValidationPipeline',
     'open.scraper.pipelines.DjangoWriterPipeline',
 ]
 
-IMAGES_STORE = os.path.join(PROJECT_ROOT, '../thumbnails')
+IMAGES_STORE = '/Users/kwan/Downloads/static/img'
 
 IMAGES_THUMBS = {
-    'small': (170, 170),
+    'small': (160, 120),
+    'big'  : (344,255),
 }
 
 DSCRAPER_LOG_ENABLED = True
