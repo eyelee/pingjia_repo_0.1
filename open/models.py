@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from scrapy.contrib_exp.djangoitem import DjangoItem
+from scrapy.item import Field
+from scrapy.contrib.loader.processor import Join
 from dynamic_scraper.models import Scraper, SchedulerRuntime
 
 """
@@ -154,6 +156,11 @@ class ArticleItem(DjangoItem):
 
 class ProductItem(DjangoItem):
     django_model = Product
+    imgurls = Field(
+        default = 'http://', 
+        input_processor=Join(),
+        output_processor=Join(),
+    ) 
     
 class CategoryItem(DjangoItem):
     django_model = Category
