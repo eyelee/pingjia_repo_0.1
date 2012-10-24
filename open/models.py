@@ -62,8 +62,9 @@ class Product(models.Model):
     region = models.CharField(max_length=50,blank=True, null=True)
     region_slug = models.CharField(max_length=32,blank=True, null=True,db_index=True)
     thumbnail = models.CharField(max_length=200,null=True,blank=True)
-    image_urls = models.CharField(max_length=400,null=True,blank=True)
-    images = models.CharField(max_length=200,null=True,blank=True)
+    image_urls = models.CharField(max_length=512,null=True,blank=True)
+    imgurls = models.CharField(max_length=512,null=True,blank=True)
+    images = models.CharField(max_length=256,null=True,blank=True)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     
     def __unicode__(self):
@@ -156,12 +157,13 @@ class ArticleItem(DjangoItem):
 
 class ProductItem(DjangoItem):
     django_model = Product
+'''    
     imgurls = Field(
-        default = 'http://', 
-        input_processor=Join(),
+        #default = 'http://', 
+        #input_processor=Join(),
         output_processor=Join(),
     ) 
-    
+''' 
 class CategoryItem(DjangoItem):
     django_model = Category
      
